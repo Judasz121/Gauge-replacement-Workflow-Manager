@@ -1,0 +1,43 @@
+﻿@model JobCreateViewModel
+@{
+	ViewData["Title"] = "Create";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+	<h1>Nowe zadanie</h1>
+	<hr />
+	<form asp-action="Create" asp-controller="Job" method="post" enctype="multipart/form-data">
+		@Html.HiddenFor(m => m.Job.Id)
+		@Html.AntiForgeryToken()
+		<div class="form-group">
+			@Html.LabelFor(model => model.Job.Name)
+			@Html.EditorFor(model => model.Job.Name, new { htmlattributes = new { @class = "form-control" } })
+			@Html.ValidationMessageFor(model => model.Job.Name, "", htmlAttributes: new { @class = "form-text text-danger" } )
+		</div>
+		<div class="form-group">
+			@Html.LabelFor(model => model.SelectedBuildingId)
+			@Html.DropDownListFor(model => model.SelectedBuildingId, Model.Buildings, new { @class = "form-control" })
+			@Html.ValidationMessageFor(model => model.SelectedBuildingId, "", htmlAttributes: new { @class = "form-text text-danger" } )
+		</div>
+		<div class="form-group">
+			@Html.LabelFor(model => model.Job.Description)
+			@Html.EditorFor(model => model.Job.Description, new { htmlattributes = new { @class = "form-control" } })
+			@Html.ValidationMessageFor(model => model.Job.Description, "", htmlAttributes: new { @class = "form-text text-danger" } )
+		</div>
+		<div class="form-group">
+			@Html.LabelFor(model => model.Job.PredictedDuration)
+			@Html.EditorFor(model => model.Job.PredictedDuration, new { htmlattributes = new { @class = "form-control" } })
+			@Html.ValidationMessageFor(model => model.Job.PredictedDuration, "", htmlAttributes: new { @class = "form-text text-danger" } )
+		</div>
+		<div class="form-group">
+			@Html.LabelFor(model => model.SelectedUserIds)
+			@Html.ListBoxFor(model => model.SelectedUserIds, Model.Users, new { @multiple = "", @class = "form-control", @id = "chosen" })
+			@Html.ValidationMessageFor(model => model.SelectedUserIds, "", htmlAttributes: new { @class = "form-text text-danger" } )
+		</div>
+		<div class="form-group submit-button-container">
+			<span class="float-right">
+				<button type="submit" class="btn btn-primary">Zapisz</button>
+			</span>
+		</div>
+	</form>
+
+

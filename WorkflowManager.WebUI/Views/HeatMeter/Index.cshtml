@@ -1,0 +1,64 @@
+﻿@model HeatMeterIndexViewModel
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Ciepłomierze</h1>
+<a asp-action="Create" asp-controller="HeatMeter" class="btn btn-primary btn-lg active title-btn">Dodaj Ciepłomierz</a>
+<form method="post" asp-controller="HeatMeter" asp-action="Index" style="clear:both;">
+    Pokaż ciepłomierze dla
+    @Html.DropDownListFor(m => m.BuildingId, Model.BuildingsSelectList, "Wszystkich budynków", htmlAttributes: new { @onchange = "this.form.submit()" })
+</form>
+<table id="dataTable1" class="NonResponsiveColumn-7">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(m => m.HeatMeters.FirstOrDefault().DemountedHeatMeterNum)</th>
+            <th>@Html.DisplayNameFor(m => m.HeatMeters.FirstOrDefault().MountedHeatMeterNum)</th>
+            <th>@Html.DisplayNameFor(m => m.HeatMeters.FirstOrDefault().MountState)</th>
+            <th>@Html.DisplayNameFor(m => m.HeatMeters.FirstOrDefault().DemountState)</th>
+            <th>@Html.DisplayNameFor(m => m.HeatMeters.FirstOrDefault().Measurement)</th>
+            <th>@Html.DisplayNameFor(m => m.HeatMeters.FirstOrDefault().SensorSealNum)</th>
+            <th>@Html.DisplayNameFor(m => m.HeatMeters.FirstOrDefault().SealNum)</th>
+            <th>Opcje</th>
+        </tr>
+    </thead>
+    <tfoot>
+        <tr>
+            <th>@Html.DisplayNameFor(m => m.HeatMeters.FirstOrDefault().DemountedHeatMeterNum)</th>
+            <th>@Html.DisplayNameFor(m => m.HeatMeters.FirstOrDefault().MountedHeatMeterNum)</th>
+            <th>@Html.DisplayNameFor(m => m.HeatMeters.FirstOrDefault().MountState)</th>
+            <th>@Html.DisplayNameFor(m => m.HeatMeters.FirstOrDefault().DemountState)</th>
+            <th>@Html.DisplayNameFor(m => m.HeatMeters.FirstOrDefault().Measurement)</th>
+            <th>@Html.DisplayNameFor(m => m.HeatMeters.FirstOrDefault().SensorSealNum)</th>
+            <th>@Html.DisplayNameFor(m => m.HeatMeters.FirstOrDefault().SealNum)</th>
+            <th>Opcje</th>
+        </tr>
+    </tfoot>
+    <tbody>
+        @foreach (HeatMeterViewModel item in Model.HeatMeters)
+		{
+        <tr>
+            <td>@Html.DisplayFor(m => item.DemountedHeatMeterNum)</td>
+            <td>@Html.DisplayFor(m => item.MountedHeatMeterNum)</td>
+            <td>@Html.DisplayFor(m => item.MountState)</td>
+            <td>@Html.DisplayFor(m => item.DemountState)</td>
+            <td>@Html.DisplayFor(m => item.Measurement)</td>
+            <td>@Html.DisplayFor(m => item.SensorSealNum)</td>
+            <td>@Html.DisplayFor(m => item.SealNum)</td>
+            <td>
+                <div class="btn-group dropdown">
+                    <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Opcje
+                    </button>
+                    <div class="dropdown-menu">
+                        @Html.ActionLink("Szczegóły", "Details", "HeatMeter", new { id = item.Id }, new { @class = "dropdown-item" })
+                        @Html.ActionLink("Edycja", "Edit", "HeatMeter", new { id = item.Id }, new { @class = "dropdown-item" })
+                        @Html.ActionLink("Usuń", "Delete", "HeatMeter", new { id = item.Id }, new { @class = "dropdown-item" })
+                    </div>
+                </div>
+            </td>
+        </tr>
+		}
+    </tbody>
+</table>

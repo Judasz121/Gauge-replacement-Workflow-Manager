@@ -1,0 +1,61 @@
+﻿@model JobEditViewModel
+@{
+	ViewData["Title"] = "Edit";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+	<h1>Edycja zadania</h1>
+
+	<hr />
+	<form asp-action="Edit" asp-controller="Job" method="post" enctype="multipart/form-data">
+		@Html.HiddenFor(m => m.Job.Id)
+		@Html.HiddenFor(m => m.Job.Order)
+		@Html.HiddenFor(m => m.Job.DateAdded)
+		@Html.AntiForgeryToken()
+		<div class="form-group">
+			@Html.LabelFor(model => model.Job.Name)
+
+			@if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+				@Html.EditorFor(model => model.Job.Name, new { htmlattributes = new { @class = "form-control" } })
+				else
+					@Html.EditorFor(model => model.Job.Name, new { htmlattributes = new { @class = "form-control", @readonly = "true" } })
+
+			@Html.ValidationMessageFor(model => model.Job.Name, "", htmlAttributes: new { @class = "form-text text-danger" })
+		</div>
+		<div class="form-group">
+			@Html.LabelFor(model => model.Job.IdBuilding)
+
+			@if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+				@Html.DropDownListFor(model => model.SelectedBuildingId, Model.Buildings, null, new { @class = "form-control" })
+				else
+					@Html.DropDownListFor(model => model.SelectedBuildingId, Model.Buildings, null, new { @class = "form-control", @readonly = true })
+
+			@Html.ValidationMessageFor(model => model.SelectedBuildingId, "", htmlAttributes: new { @class = "form-text text-danger" })
+		</div>
+		<div class="form-group">
+			@Html.LabelFor(model => model.Job.Description)
+			@Html.TextAreaFor(model => model.Job.Description, new { @class = "form-control"  })
+			@Html.ValidationMessageFor(model => model.Job.Description, "", htmlAttributes: new { @class = "form-text text-danger" })
+		</div>
+		<div class="form-group">
+			@Html.LabelFor(model => model.Job.PredictedDuration)
+			@Html.EditorFor(model => model.Job.PredictedDuration, new { htmlattributes = new { @class = "form-control" } })
+			@Html.ValidationMessageFor(model => model.Job.PredictedDuration, "", htmlAttributes: new { @class = "form-text text-danger" })
+		</div>
+		<div class="form-group">
+			@Html.LabelFor(m => m.Job.DateAdded)
+			@Html.EditorFor(m => m.Job.DateAdded, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+		</div>
+		<div class="form-group">
+			@Html.LabelFor(model => model.SelectedUserIds)
+			@Html.ListBoxFor(model => model.SelectedUserIds, Model.Users, new { @multiple = "", @class = "form-control", @id = "chosen1" })
+			@Html.ValidationMessageFor(model => model.SelectedUserIds, "", htmlAttributes: new { @class = "form-text text-danger" })
+		</div>
+		<div class="form-group submit-button-container">
+			<span class="float-right">
+				@Html.ActionLink("Zrobione", "Done", "Job", Model.Job.Id, new { @class = "btn btn-success" })
+				<button type="submit" class="btn btn-primary">Zapisz Zmiany</button>
+			</span>
+		</div>
+	</form>
+
+

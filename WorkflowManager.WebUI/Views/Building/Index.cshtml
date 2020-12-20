@@ -1,0 +1,74 @@
+﻿@model	BuildingIndexViewModel
+@{
+	ViewData["Title"] = "Index";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Budynki</h1>
+<a asp-action="Create" asp-controller="Building" class="btn btn-primary btn-lg active title-btn">Dodaj Budynek</a>
+
+<table id="dataTable1" class="NonResponsiveColumn-6">
+	<thead>
+		<tr>
+			<th>@Html.DisplayNameFor(m => m.Buildings.FirstOrDefault().FullAddress)</th>
+			<th>@Html.DisplayNameFor(m => m.Buildings.FirstOrDefault().DateWorkStart)</th>
+			<th>@Html.DisplayNameFor(m => m.Buildings.FirstOrDefault().PredictedWorkEndDate)</th>
+			<th>@Html.DisplayNameFor(m => m.Buildings.FirstOrDefault().DateWorkEnd)</th>
+			<th>@Html.DisplayNameFor(m => m.Buildings.FirstOrDefault().Users)</th>
+			<th>@Html.DisplayNameFor(m => m.Buildings.FirstOrDefault().Done)</th>
+			<th>Opcje</th>
+		</tr>
+	</thead>
+	<tfoot>
+		<tr>
+			<th>@Html.DisplayNameFor(m => m.Buildings.FirstOrDefault().FullAddress)</th>
+			<th>@Html.DisplayNameFor(m => m.Buildings.FirstOrDefault().DateWorkStart)</th>
+			<th>@Html.DisplayNameFor(m => m.Buildings.FirstOrDefault().PredictedWorkEndDate)</th>
+			<th>@Html.DisplayNameFor(m => m.Buildings.FirstOrDefault().DateWorkEnd)</th>
+			<th>@Html.DisplayNameFor(m => m.Buildings.FirstOrDefault().Users)</th>
+			<th>@Html.DisplayNameFor(m => m.Buildings.FirstOrDefault().Done)</th>
+			<th>Opcje</th>
+		</tr>
+	</tfoot>
+	<tbody>
+		@foreach (BuildingViewModel item in Model.Buildings)
+		{
+			<tr>
+				<td>@Html.DisplayFor(m => item.FullAddress)</td>
+				<td>@Html.DisplayFor(m => item.DateWorkStart)</td>
+				<td>@Html.DisplayFor(m => item.PredictedWorkEndDate)</td>
+				<td>@Html.DisplayFor(m => item.DateWorkEnd)</td>
+				<td>
+					@foreach (UserViewModel user in item.Users)
+					{
+						@Html.ActionLink(user.FullName, "Details", "User", new { id = user.Id }, new { @class = "object-link" })
+						<br />
+					}
+				</td>
+				<td>
+					@Html.DisplayFor(m => item.Done)
+					@if (item.Done)
+					{
+						<span class="hidden">Tak 1 true</span>
+					}
+					else
+					{
+						<span class="hidden">Nie 0 false</span>
+					}
+				</td>
+				<td>
+					<div class="btn-group dropdown">
+						<button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							Opcje
+						</button>
+						<div class="dropdown-menu">
+							@Html.ActionLink("Szczegóły", "Details", "Building", new { id = item.Id }, new { @class = "dropdown-item" })
+							@Html.ActionLink("Edycja", "Edit", "Building", new { id = item.Id }, new { @class = "dropdown-item" })
+							@Html.ActionLink("Usuń", "Delete", "Building", new { id = item.Id }, new { @class = "dropdown-item" })
+						</div>
+					</div>
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>

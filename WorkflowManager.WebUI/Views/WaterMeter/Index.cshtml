@@ -1,0 +1,66 @@
+﻿@model WaterMeterIndexViewModel
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Wodomierze</h1>
+<a asp-action="Create" asp-controller="WaterMeter" class="btn btn-primary btn-lg active title-btn">Dodaj Wodomierz</a>
+<br />
+<form method="get" asp-controller="WaterMeter" asp-action="Index" style="clear:both;" role="form">
+    Pokaż wodomierze dla
+    @Html.DropDownListFor(m => m.BuildingId, Model.BuildingsSelectList, "Wszystkich budynków", htmlAttributes: new { @onchange = "this.form.submit()" })
+</form>
+<table id="dataTable1" class="NonResponsiveColumn-7">
+    <thead>
+
+        <tr>
+            <th>@Html.DisplayNameFor(m => m.WaterMeters.FirstOrDefault().DemountedWaterMeterNum)</th>
+            <th>@Html.DisplayNameFor(m => m.WaterMeters.FirstOrDefault().MountedWaterMeterNum)</th>
+            <th>@Html.DisplayNameFor(m => m.WaterMeters.FirstOrDefault().MountState)</th>
+            <th>@Html.DisplayNameFor(m => m.WaterMeters.FirstOrDefault().DemountState)</th>
+            <th>@Html.DisplayNameFor(m => m.WaterMeters.FirstOrDefault().Measurement)</th>
+            <th>@Html.DisplayNameFor(m => m.WaterMeters.FirstOrDefault().CheckValve)</th>
+            <th>@Html.DisplayNameFor(m => m.WaterMeters.FirstOrDefault().SealNum)</th>
+            <th>Opcje</th>
+        </tr>
+    </thead>
+    <tfoot>
+        <tr>
+            <th>@Html.DisplayNameFor(m => m.WaterMeters.FirstOrDefault().DemountedWaterMeterNum)</th>
+            <th>@Html.DisplayNameFor(m => m.WaterMeters.FirstOrDefault().MountedWaterMeterNum)</th>
+            <th>@Html.DisplayNameFor(m => m.WaterMeters.FirstOrDefault().MountState)</th>
+            <th>@Html.DisplayNameFor(m => m.WaterMeters.FirstOrDefault().DemountState)</th>
+            <th>@Html.DisplayNameFor(m => m.WaterMeters.FirstOrDefault().Measurement)</th>
+            <th>@Html.DisplayNameFor(m => m.WaterMeters.FirstOrDefault().CheckValve)</th>
+            <th>@Html.DisplayNameFor(m => m.WaterMeters.FirstOrDefault().SealNum)</th>
+            <th>Opcje</th>
+        </tr>
+    </tfoot>
+    <tbody>
+        @foreach (WaterMeterViewModel item in Model.WaterMeters)
+		{
+        <tr>
+            <td>@Html.DisplayFor(m => item.DemountedWaterMeterNum)</td>
+            <td>@Html.DisplayFor(m => item.MountedWaterMeterNum)</td>
+            <td>@Html.DisplayFor(m => item.MountState)</td>
+            <td>@Html.DisplayFor(m => item.DemountState)</td>
+            <td>@Html.DisplayFor(m => item.Measurement)</td>
+            <td>@Html.DisplayFor(m => item.CheckValve)</td>
+            <td>@Html.DisplayFor(m => item.SealNum)</td>
+            <td>
+                <div class="btn-group dropdown">
+                    <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Opcje
+                    </button>
+                    <div class="dropdown-menu">
+                        @Html.ActionLink("Szczegóły", "Details", "WaterMeter", new { id = item.Id }, new { @class = "dropdown-item" })
+                        @Html.ActionLink("Edycja", "Edit", "WaterMeter", new { id = item.Id }, new { @class = "dropdown-item" })
+                        @Html.ActionLink("Usuń", "Delete", "WaterMeter", new { id = item.Id }, new { @class = "dropdown-item" })
+                    </div>
+                </div>
+            </td>
+        </tr>
+		}
+    </tbody>
+</table>

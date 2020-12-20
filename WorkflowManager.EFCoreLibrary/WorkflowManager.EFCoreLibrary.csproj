@@ -1,0 +1,74 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <AssemblyName>WorkflowManager.EFCoreLibrary</AssemblyName>
+    <RootNamespace>WorkflowManager.EFCoreLibrary</RootNamespace>
+    <Platforms>AnyCPU;x64</Platforms>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Migrations\20201019102936_AddedRoles.cs" />
+    <Compile Remove="Migrations\20201019102936_AddedRoles.Designer.cs" />
+    <Compile Remove="Migrations\20201020121921_Job.DurationToPredictedDurationNameChange.cs" />
+    <Compile Remove="Migrations\20201020121921_Job.DurationToPredictedDurationNameChange.Designer.cs" />
+    <Compile Remove="Migrations\20201102153139_AddedUserRolesRelationship.cs" />
+    <Compile Remove="Migrations\20201102153139_AddedUserRolesRelationship.Designer.cs" />
+    <Compile Remove="Migrations\20201103142245_AddedAdminDataSeed.cs" />
+    <Compile Remove="Migrations\20201103142245_AddedAdminDataSeed.Designer.cs" />
+    <Compile Remove="Migrations\20201103142551_AddedAdminDataSeed.cs" />
+    <Compile Remove="Migrations\20201103142551_AddedAdminDataSeed.Designer.cs" />
+    <Compile Remove="Migrations\20201103142721_AddedAdminDataSeed.cs" />
+    <Compile Remove="Migrations\20201103142721_AddedAdminDataSeed.Designer.cs" />
+    <Compile Remove="Migrations\20201103143216_AddedAdminDataSeed.cs" />
+    <Compile Remove="Migrations\20201103143216_AddedAdminDataSeed.Designer.cs" />
+    <Compile Remove="Migrations\20201103144016_AddedAdminDataSeed.cs" />
+    <Compile Remove="Migrations\20201103144016_AddedAdminDataSeed.Designer.cs" />
+    <Compile Remove="Migrations\20201103144123_AddedAdminDataSeed.cs" />
+    <Compile Remove="Migrations\20201103144123_AddedAdminDataSeed.Designer.cs" />
+    <Compile Remove="Migrations\20201103144232_AddedAdminDataSeed.cs" />
+    <Compile Remove="Migrations\20201103144232_AddedAdminDataSeed.Designer.cs" />
+    <Compile Remove="Migrations\20201103150640_AddedAdminDataSeed.cs" />
+    <Compile Remove="Migrations\20201103150640_AddedAdminDataSeed.Designer.cs" />
+    <Compile Remove="Migrations\20201103150830_AddedAdminDataSeed.cs" />
+    <Compile Remove="Migrations\20201103150830_AddedAdminDataSeed.Designer.cs" />
+    <Compile Remove="Migrations\20201103151108_AddedAdminDataSeed.cs" />
+    <Compile Remove="Migrations\20201103151108_AddedAdminDataSeed.Designer.cs" />
+    <Compile Remove="Migrations\20201103154103_AddedAdminDataSeed.cs" />
+    <Compile Remove="Migrations\20201103154103_AddedAdminDataSeed.Designer.cs" />
+    <Compile Remove="Migrations\20201103160229_AddedProductionIdentityDataSeed.cs" />
+    <Compile Remove="Migrations\20201103160229_AddedProductionIdentityDataSeed.Designer.cs" />
+    <Compile Remove="Migrations\20201104130241_AddedProductionIdentityDataSeed.cs" />
+    <Compile Remove="Migrations\20201104130241_AddedProductionIdentityDataSeed.Designer.cs" />
+    <Compile Remove="Migrations\20201104142940_AddedProductionIdentityDataSeed.cs" />
+    <Compile Remove="Migrations\20201104142940_AddedProductionIdentityDataSeed.Designer.cs" />
+    <Compile Remove="Migrations\20201104143037_AddedProductionIdentityDataSeed.cs" />
+    <Compile Remove="Migrations\20201104143037_AddedProductionIdentityDataSeed.Designer.cs" />
+    <Compile Remove="Migrations\20201104143239_AddedProductionIdentityDataSeed.cs" />
+    <Compile Remove="Migrations\20201104143239_AddedProductionIdentityDataSeed.Designer.cs" />
+    <Compile Remove="Migrations\20201104144111_AddedProductionIdentityDataSeed.cs" />
+    <Compile Remove="Migrations\20201104144111_AddedProductionIdentityDataSeed.Designer.cs" />
+    <Compile Remove="Migrations\20201104145812_AddedProductionIdentityDataSeed.cs" />
+    <Compile Remove="Migrations\20201104145812_AddedProductionIdentityDataSeed.Designer.cs" />
+    <Compile Remove="Migrations\20201109134920_testMig.cs" />
+    <Compile Remove="Migrations\20201109134920_testMig.Designer.cs" />
+    <Compile Remove="Migrations\20201110151149_UserBuildingRelationAdded.cs" />
+    <Compile Remove="Migrations\20201110151149_UserBuildingRelationAdded.Designer.cs" />
+    <Compile Remove="Migrations\20201115101808_MetersPropertiesNameChanges.cs" />
+    <Compile Remove="Migrations\20201115101808_MetersPropertiesNameChanges.Designer.cs" />
+    <Compile Remove="Migrations\20201115102039_MetersPropertyChanges.cs" />
+    <Compile Remove="Migrations\20201115102039_MetersPropertyChanges.Designer.cs" />
+    <Compile Remove="Migrations\20201124113726_test.cs" />
+    <Compile Remove="Migrations\20201124113726_test.Designer.cs" />
+    <Compile Remove="Migrations\20201124113814_JobAddedDateAdded.cs" />
+    <Compile Remove="Migrations\20201124113814_JobAddedDateAdded.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.7" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="3.1.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.7" />
+  </ItemGroup>
+
+</Project>

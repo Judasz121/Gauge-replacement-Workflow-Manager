@@ -1,0 +1,58 @@
+﻿@model UserViewModel
+@{
+	ViewData["Title"] = "Details";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Szczegóły</h1>
+@if (User.IsInRole("Admin"))
+{
+	<a asp-action="Edit" asp-controller="User" asp-route-id="@Model.Id" class="btn btn-primary btn-lg active title-btn">Edytuj</a>
+}
+<hr />
+
+<div class="form-group">
+	@Html.LabelFor(m => m.UserName)
+	@Html.EditorFor(m => m.UserName, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+</div>
+<div class="form-group">
+	@Html.LabelFor(m => m.FirstName)
+	@Html.EditorFor(m => m.FirstName, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+</div>
+<div class="form-group">
+	@Html.LabelFor(m => m.LastName)
+	@Html.EditorFor(m => m.LastName, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+</div>
+<div class="form-group">
+	@Html.LabelFor(m => m.Email)
+	@Html.EditorFor(m => m.Email, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+</div>
+<div class="form-group">
+	@Html.LabelFor(m => m.PhoneNumber)
+	@Html.EditorFor(m => m.PhoneNumber, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+</div>
+<div class="form-group">
+	@Html.LabelFor(m => m.Roles)
+	<span class="form-control" >
+		@foreach(string role in Model.Roles)
+		{
+			@role
+			<br />
+		}
+	</span>
+</div>
+<div class="form-group">
+	@Html.LabelFor(m => m.Jobs)
+	<span class="form-control">
+		@if (Model.Jobs.Count() == 0)
+		{
+			<text>brak</text>
+		}
+		else
+		@foreach (var job in Model.Jobs)
+		{
+			@Html.ActionLink(job.Name, "Details", "Job", new { id = job.Id }, new { @class = "" })
+			<br />
+		}
+	</span>
+</div>

@@ -1,0 +1,102 @@
+﻿@model JobIndexViewModel
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Zadania</h1>
+	<a asp-action="Create" asp-controller="Job" class="btn btn-primary btn-lg active title-btn">Dodaj zadanie</a>
+
+<table id="dataTable" class="NonResponsiveColumn-10">
+	<thead>
+		<tr>
+			<th>@Html.DisplayNameFor(m => m.Jobs.FirstOrDefault().Name)</th>
+			<th>@Html.DisplayNameFor(m => m.Jobs.FirstOrDefault().Building.FullAddress)</th>
+			<th>@Html.DisplayNameFor(m => m.Jobs.FirstOrDefault().Description)</th>
+			<th>@Html.DisplayNameFor(m => m.Jobs.FirstOrDefault().Deleted)</th>
+			<th>@Html.DisplayNameFor(m => m.Jobs.FirstOrDefault().Done)</th>
+			<th>@Html.DisplayNameFor(m => m.Jobs.FirstOrDefault().Users)</th>
+			<th>@Html.DisplayNameFor(m => m.Jobs.FirstOrDefault().DateAdded)</th>
+			<th>@Html.DisplayNameFor(m => m.Jobs.FirstOrDefault().PredictedDuration)</th>
+			<th>@Html.DisplayNameFor(m => m.Jobs.FirstOrDefault().PredictedDoneDate)</th>
+			<th>@Html.DisplayNameFor(m => m.Jobs.FirstOrDefault().DoneDate)</th>
+			<th>Opcje</th>
+		</tr>
+	</thead>
+	<tfoot>
+		<tr>
+			<th>@Html.DisplayNameFor(m => m.Jobs.FirstOrDefault().Name)</th>
+			<th>@Html.DisplayNameFor(m => m.Jobs.FirstOrDefault().Building.FullAddress)</th>
+			<th>@Html.DisplayNameFor(m => m.Jobs.FirstOrDefault().Description)</th>
+			<th>@Html.DisplayNameFor(m => m.Jobs.FirstOrDefault().Deleted)</th>
+			<th>@Html.DisplayNameFor(m => m.Jobs.FirstOrDefault().Done)</th>
+			<th>@Html.DisplayNameFor(m => m.Jobs.FirstOrDefault().Users)</th>
+			<th>@Html.DisplayNameFor(m => m.Jobs.FirstOrDefault().DateAdded)</th>
+			<th>@Html.DisplayNameFor(m => m.Jobs.FirstOrDefault().PredictedDuration)</th>
+			<th>@Html.DisplayNameFor(m => m.Jobs.FirstOrDefault().PredictedDoneDate)</th>
+			<th>@Html.DisplayNameFor(m => m.Jobs.FirstOrDefault().DoneDate)</th>
+			<th>Opcje</th>
+		</tr>
+	</tfoot>
+	<tbody>
+		@foreach (JobViewModel item in Model.Jobs)
+		{
+		<tr>
+			<td>@Html.DisplayFor(m => item.Name)</td>
+			<td>
+				@Html.ActionLink(item.Building.FullAddress, "Details", "Building", new { id = item.Building.Id }, new { @class = "object-link" })
+			</td>
+			<td>@Html.DisplayFor(m => item.Description)</td>
+			<td>
+				@Html.DisplayFor(m => item.Deleted)
+				@if (item.Deleted)
+				{
+					<span class="hidden">tak 1 true</span>
+				}
+				else
+				{
+					<span class="hidden">nie 0 false</span>
+				}
+			</td>
+			<td>
+				@Html.DisplayFor(m => item.Done)
+				@if (item.Done)
+				{
+					<span class="hidden">tak 1 true</span>
+				}
+				else
+				{
+					<span class="hidden">nie 0 false</span>
+				}
+			</td>
+			<td>
+				@foreach (var user in item.Users)
+				{
+					@Html.ActionLink(user.FullName, "Details", "User", new { id = user.Id }, new { @class = "object-link" })
+					<br />
+				}
+			</td>
+			<td>@Html.DisplayFor(m => item.DateAdded)</td>
+			<td>@Html.DisplayFor(m => item.PredictedDuration)</td>
+			<td>@Html.DisplayFor(m => item.PredictedDoneDate)</td>
+			<td>@Html.DisplayFor(m => item.DoneDate)</td>
+			<td>
+				<div class="btn-group dropdown">
+					<button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						Opcje
+					</button>
+					<div class="dropdown-menu">
+						@Html.ActionLink("Szczegóły", "Details", "Job", new { id = item.Id }, new { @class = "dropdown-item" })
+						@if (!item.Deleted && !item.Done)
+						{
+							@Html.ActionLink("Edycja", "Edit", "Job", new { id = item.Id }, new { @class = "dropdown-item" })
+							@Html.ActionLink("Usuń", "Delete", "Job", new { id = item.Id }, new { @class = "dropdown-item" })
+							@Html.ActionLink("Zrobione", "Done", "Job", new { id = item.Id }, new { @class = "dropdown-item" })
+						}
+					</div>
+				</div>
+			</td>
+		</tr>
+		}
+	</tbody>
+</table>

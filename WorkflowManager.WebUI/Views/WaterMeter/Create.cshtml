@@ -1,0 +1,56 @@
+﻿@model WaterMeterCreateViewModel 
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Nowy miernik wody</h1>
+<hr />
+<form method="post" asp-action="Create" asp-controller="WaterMeter" enctype="multipart/form-data">
+	@Html.AntiForgeryToken()
+	<div class="form-group">
+		@Html.LabelFor(m => m.WaterMeter.BuildingId)
+		@Html.DropDownListFor(m => m.WaterMeter.BuildingId, Model.BuildingsSelectList, "Wybierz budynek", new { @class = "form-control" })
+		@Html.ValidationMessageFor(m => m.WaterMeter.BuildingId, "", htmlAttributes: new { @class = "form-text text-danger" })
+	</div>
+	<div class="form-group">
+		@Html.LabelFor(m => m.WaterMeter.Measurement)
+		@Html.EditorFor(model => model.WaterMeter.Measurement, new { htmlattributes = new { @class = "form-control" } })
+		@Html.ValidationMessageFor(m => m.WaterMeter.Measurement, "", htmlAttributes: new { @class = "form-text text-danger" })
+	</div>
+	<div class="form-group">
+		@Html.LabelFor(m => m.WaterMeter.DemountedWaterMeterNum)
+		@Html.EditorFor(model => model.WaterMeter.DemountedWaterMeterNum, new { htmlattributes = new { @class = "form-control" } })
+		@Html.ValidationMessageFor(m => m.WaterMeter.DemountedWaterMeterNum, "", htmlAttributes: new { @class = "form-text text-danger" })
+	</div>
+	<div class="form-group">
+		@Html.LabelFor(m => m.WaterMeter.DemountState)
+		@Html.EditorFor(model => model.WaterMeter.DemountState, new { htmlattributes = new { @class = "form-control" } })
+		@Html.ValidationMessageFor(m => m.WaterMeter.DemountState, "", htmlAttributes: new { @class = "form-text text-danger" })
+	</div>
+	<div class="form-group">
+		@Html.LabelFor(m => m.WaterMeter.MountedWaterMeterNum)
+		@Html.EditorFor(model => model.WaterMeter.MountedWaterMeterNum, new { htmlattributes = new { @class = "form-control" } })
+		@Html.ValidationMessageFor(m => m.WaterMeter.MountedWaterMeterNum, "", htmlAttributes: new { @class = "form-text text-danger" })
+	</div>
+	<div class="form-group">
+		@Html.LabelFor(m => m.WaterMeter.MountState)
+		@Html.EditorFor(model => model.WaterMeter.MountState, new { htmlattributes = new { @class = "form-control" } })
+		@Html.ValidationMessageFor(m => m.WaterMeter.MountState, "", htmlAttributes: new { @class = "form-text text-danger" })
+	</div>
+	<div class="form-group">
+		@Html.LabelFor(m => m.WaterMeter.SealNum)
+		@Html.EditorFor(model => model.WaterMeter.SealNum, new { htmlattributes = new { @class = "form-control" } })
+		@Html.ValidationMessageFor(m => m.WaterMeter.SealNum, "", htmlAttributes: new { @class = "form-text text-danger" })
+	</div>
+	<div class="form-group">
+		@Html.LabelFor(m => m.WaterMeter.CheckValve)
+		@Html.EditorFor(model => model.WaterMeter.CheckValve, new { htmlattributes = new { @class = "form-control" } })
+		@Html.ValidationMessageFor(m => m.WaterMeter.CheckValve, "", htmlAttributes: new { @class = "form-text text-danger" })
+	</div>
+	<div class="form-group submit-button-container">
+		<span class="float-right">
+			<button type="submit" class="btn btn-primary">Zapisz</button>
+		</span>
+	</div>
+</form>

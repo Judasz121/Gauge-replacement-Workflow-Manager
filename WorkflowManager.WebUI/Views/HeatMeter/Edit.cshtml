@@ -1,0 +1,57 @@
+﻿@model HeatMeterEditViewModel 
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Edycja miernika ciepła</h1>
+<hr />
+<form method="post" asp-action="Edit" asp-controller="HeatMeter" enctype="multipart/form-data">
+	@Html.HiddenFor(m => m.HeatMeter.Id)
+	@Html.AntiForgeryToken()
+	<div class="form-group">
+		@Html.LabelFor(m => m.HeatMeter.BuildingId)
+		@Html.DropDownListFor(m => m.HeatMeter.BuildingId, Model.BuildingsSelectList, "Wybierz budynek", new { @class = "form-control" })
+		@Html.ValidationMessageFor(m => m.HeatMeter.BuildingId, "", htmlAttributes: new { @class = "form-text text-danger" })
+	</div>
+	<div class="form-group">
+		@Html.LabelFor(m => m.HeatMeter.Measurement)
+		@Html.EditorFor(model => model.HeatMeter.Measurement, new { htmlattributes = new { @class = "form-control" } })
+		@Html.ValidationMessageFor(m => m.HeatMeter.Measurement, "", new { @class = "form-text text-danger" })
+	</div>
+	<div class="form-group">
+		@Html.LabelFor(m => m.HeatMeter.DemountedHeatMeterNum)
+		@Html.EditorFor(model => model.HeatMeter.DemountedHeatMeterNum, new { htmlattributes = new { @class = "form-control" } })
+		@Html.ValidationMessageFor(m => m.HeatMeter.DemountedHeatMeterNum, "", htmlAttributes: new { @class = "form-text text-danger" })
+	</div>
+	<div class="form-group">
+		@Html.LabelFor(m => m.HeatMeter.DemountState)
+		@Html.EditorFor(model => model.HeatMeter.DemountState, new { htmlattributes = new { @class = "form-control" } })
+		@Html.ValidationMessageFor(m => m.HeatMeter.DemountState, "", htmlAttributes: new { @class = "form-text text-danger" })
+	</div>
+	<div class="form-group">
+		@Html.LabelFor(m => m.HeatMeter.MountedHeatMeterNum)
+		@Html.EditorFor(model => model.HeatMeter.MountedHeatMeterNum, new { htmlattributes = new { @class = "form-control" } })
+		@Html.ValidationMessageFor(m => m.HeatMeter.MountedHeatMeterNum, "", htmlAttributes: new { @class = "form-text text-danger" })
+	</div>
+	<div class="form-group">
+		@Html.LabelFor(m => m.HeatMeter.MountState)
+		@Html.EditorFor(model => model.HeatMeter.MountState, new { htmlattributes = new { @class = "form-control" } })
+		@Html.ValidationMessageFor(m => m.HeatMeter.MountState, "", htmlAttributes: new { @class = "form-text text-danger" })
+	</div>
+	<div class="form-group">
+		@Html.LabelFor(m => m.HeatMeter.SealNum)
+		@Html.EditorFor(model => model.HeatMeter.SealNum, new { htmlattributes = new { @class = "form-control" } })
+		@Html.ValidationMessageFor(m => m.HeatMeter.SealNum, "", htmlAttributes: new { @class = "form-text text-danger" })
+	</div>
+	<div class="form-group">
+		@Html.LabelFor(m => m.HeatMeter.SensorSealNum)
+		@Html.EditorFor(model => model.HeatMeter.SensorSealNum, new { htmlattributes = new { @class = "form-control" } })
+		@Html.ValidationMessageFor(m => m.HeatMeter.SensorSealNum, "", htmlAttributes: new { @class = "form-text text-danger" })
+	</div>
+	<div class="form-group submit-button-container">
+		<span class="float-right">
+			<button type="submit" class="btn btn-primary">Zapisz</button>
+		</span>
+	</div>
+</form>

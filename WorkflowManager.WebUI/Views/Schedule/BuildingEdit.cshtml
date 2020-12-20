@@ -1,0 +1,46 @@
+﻿@model ScheduleBuildingEditViewModel
+@{
+    ViewData["Title"] = "BuildingEdit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<form method="post" asp-controller="Schedule" asp-action="BuildingEdit" enctype="multipart/form-data">
+	<h1>Edycja priorytetu zadań dla @Model.Building.FullAddress</h1> <button type="submit" class="btn btn-primary float-right title-btn btn-lg">Zapisz</button>
+	@Html.HiddenFor(m => m.BuildingId)
+	@Html.HiddenFor(m => m.JobsOrder)
+<span style="display:inline-block">
+	@Html.ValidationMessageFor(m => m.JobsOrder, null, new { @class = "text-danger" })
+</span>
+</form>
+<hr/>
+<ol id="buildingEditSortable" >
+    @for (int i = 0; i < Model.Jobs.Count(); i++)
+	{
+        JobViewModel item = Model.Jobs[i];
+    <li id="job_@item.Id">
+        <div class="card job-card">
+            <div class="card-header">
+                @Html.ActionLink(item.Name, "Details", "Job", new { id = item.Id})
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-7">
+                        Opis
+                        <hr />
+                        @Html.DisplayFor(m => item.Description)
+                    </div>
+                    <div class="col">
+                        Przypisani
+                        <hr />
+                        @foreach(UserViewModel user in item.Users)
+						{
+                            @Html.ActionLink(user.FullName, "Details", "User", new { id = user.Id})
+                            <br />
+						}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </li>
+	}
+</ol>
+

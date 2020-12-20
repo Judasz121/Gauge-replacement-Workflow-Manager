@@ -1,0 +1,43 @@
+﻿@model WaterMeterViewModel
+@{
+	ViewData["Title"] = "Details";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Szczegóły</h1>
+<a asp-action="Edit" asp-controller="WaterMeter" asp-route-id="@Model.Id" class="btn btn-primary btn-lg active title-btn">Edytuj</a>
+
+<hr />
+
+<div class="form-group">
+	@Html.LabelFor(m => m.Building.FullAddress)
+	@Html.ActionLink(Model.Building.FullAddress, "Details", "Building", Model.BuildingId, new { @class = "form-control" })
+</div>
+<div class="form-group">
+	@Html.LabelFor(m => m.Measurement)
+	@Html.EditorFor(m => m.Measurement, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+</div>
+<div class="form-group">
+	@Html.LabelFor(m => m.DemountState)
+	@Html.EditorFor(m => m.DemountState, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+</div>
+<div class="form-group">
+	@Html.LabelFor(m => m.MountState)
+	@Html.EditorFor(m => m.MountState, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+</div>
+<div class="form-group">
+	@Html.LabelFor(m => m.DemountedWaterMeterNum)
+	@Html.EditorFor(m => m.DemountedWaterMeterNum, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+</div>
+<div class="form-group">
+	@Html.LabelFor(m => m.MountedWaterMeterNum)
+	@Html.EditorFor(m => m.MountedWaterMeterNum, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+</div>
+<div class="form-group">
+	@Html.LabelFor(m => m.SealNum)
+	@Html.EditorFor(m => m.SealNum, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+</div>
+<div class="form-group">
+	@Html.LabelFor(m => m.CheckValve)
+	@Html.EditorFor(m => m.CheckValve, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+</div>

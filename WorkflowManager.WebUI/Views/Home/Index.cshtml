@@ -1,0 +1,191 @@
+﻿@model WorkflowManager.WebUI.Models.HomeIndexViewModel
+@{
+    ViewData["Title"] = "Home Page";
+}
+	<h4>Najnowsze zadania</h4>
+	<table class="NonResponsiveColumn-5 DefaultSort-4-desc " id="dataTable1">
+		<thead>
+			<tr>
+				<th>
+					@Html.DisplayNameFor(model => model.CurrentJobs.FirstOrDefault().Name)
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.CurrentJobs.FirstOrDefault().Description)
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.CurrentJobs.FirstOrDefault().Building.FullAddress)
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.CurrentJobs.FirstOrDefault().PredictedDoneDate)
+				</th>
+				<th>@Html.DisplayNameFor(model => model.CurrentJobs.FirstOrDefault().DateAdded)</th>
+				<th>
+					@Html.DisplayNameFor(model => model.CurrentJobs.FirstOrDefault().Users)
+				</th>
+				<th>
+					Opcje
+				</th>
+			</tr>
+		</thead>
+		<tfoot>
+			<tr>
+				<th>
+					@Html.DisplayNameFor(model => model.CurrentJobs.FirstOrDefault().Name)
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.CurrentJobs.FirstOrDefault().Description)
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.CurrentJobs.FirstOrDefault().Building.FullAddress)
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.CurrentJobs.FirstOrDefault().PredictedDoneDate)
+				</th>
+				<th>@Html.DisplayNameFor(model => model.CurrentJobs.FirstOrDefault().DateAdded)</th>
+				<th>
+					@Html.DisplayNameFor(model => model.CurrentJobs.FirstOrDefault().Users)
+				</th>
+				<th>Opcje</th>
+			</tr>
+		</tfoot>
+		<tbody>
+			@if (Model != null && Model.CurrentJobs != null)
+			@foreach (var job in Model.CurrentJobs)
+			{
+			<tr>
+				<td>
+					@Html.DisplayFor(modelItem => job.Name)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => job.Description)
+				</td>
+				<td>
+					@Html.ActionLink(job.Building.FullAddress, "Details", "Building", new { id = job.IdBuilding }, new { @class = "object-link" })
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => job.PredictedDoneDate)
+
+				</td>
+				<td>@Html.DisplayFor(modelItem => job.DateAdded)</td>
+				<td>
+					@foreach (var user in job.Users)
+					{
+						@Html.ActionLink(user.FullName, "Details", "User", new { id = user.Id }, new { @class = "object-link" })
+						<br />
+					}
+				</td>
+				<td>
+					<div class="btn-group dropdown">
+						<button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							Opcje
+						</button>
+						<div class="dropdown-menu">
+							@Html.ActionLink("Szczegóły", "Details", "Job", new { id = job.Id }, new { @class = "dropdown-item" })
+							@Html.ActionLink("Edycja", "Edit", "Job", new { id = job.Id }, new { @class = "dropdown-item" })
+							@Html.ActionLink("Usuń", "Delete", "Job", new { id = job.Id }, new { @class = "dropdown-item" })
+							@Html.ActionLink("Zrobione", "Done", "Job", new { id = job.Id }, new { @class = "dropdown-item" })
+						</div>
+					</div>
+				</td>
+			</tr>
+			}
+		</tbody>
+	</table>
+
+	<hr/>
+	<h4>Ostatnio wykonane zadania</h4>
+	<table class="DefaultSort-4-desc NonResponsiveColumn-5" id="dataTable2">
+		<thead>
+			<tr>
+				<th>
+					@Html.DisplayNameFor(model => model.DoneJobs.FirstOrDefault().Name)
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.DoneJobs.FirstOrDefault().Description)
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.DoneJobs.FirstOrDefault().Building.FullAddress)
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.DoneJobs.FirstOrDefault().PredictedDoneDate)
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.DoneJobs.FirstOrDefault().DoneDate)
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.DoneJobs.FirstOrDefault().Users)
+				</th>
+				<th>
+					Opcje
+				</th>
+			</tr>
+		</thead>
+		<tfoot>
+			<tr>
+				<th>
+					@Html.DisplayNameFor(model => model.DoneJobs.FirstOrDefault().Name)
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.DoneJobs.FirstOrDefault().Description)
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.DoneJobs.FirstOrDefault().Building.FullAddress)
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.DoneJobs.FirstOrDefault().PredictedDoneDate)
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.DoneJobs.FirstOrDefault().DoneDate)
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.DoneJobs.FirstOrDefault().Users)
+				</th>
+				<th>
+					Opcje
+				</th>
+			</tr>
+		</tfoot>
+		<tbody>
+			@if(Model != null && Model.DoneJobs != null)
+			@foreach (JobViewModel job in Model.DoneJobs)
+			{
+			<tr>
+				<td>
+					@Html.DisplayFor(modelItem => job.Name)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => job.Description)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => job.Building.FullAddress)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => job.PredictedDoneDate)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => job.DoneDate)
+				</td>
+				<td>
+					@foreach (var user in job.Users)
+					{
+						@Html.ActionLink(user.FullName, "Details", "User", new { id = user.Id }, new { @class = "link-user" })
+						<br />
+					}
+				</td>
+				<td>
+					<div class="btn-group dropdown">
+						<button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							Opcje
+						</button>
+						<div class="dropdown-menu">
+							@Html.ActionLink("Szczegóły", "Details", "Job", new { id = job.Id }, new { @class = "dropdown-item" })
+							@Html.ActionLink("Edycja", "Edit", "Job", new { id = job.Id }, new { @class = "dropdown-item" })
+							@Html.ActionLink("Usuń", "Delete", "Job", new { id = job.Id }, new { @class = "dropdown-item" })
+							@Html.ActionLink("Zrobione", "Done", "Job", new { id = job.Id }, new { @class = "dropdown-item" })
+						</div>
+					</div>
+				</td>
+			</tr>
+			}
+		</tbody>
+	</table>

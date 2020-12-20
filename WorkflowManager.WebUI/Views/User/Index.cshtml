@@ -1,0 +1,78 @@
+﻿@model UserIndexViewModel
+@{
+	ViewData["Title"] = "Index";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Użytkownicy</h1>
+<a asp-action="Create" asp-controller="User" class="btn btn-primary btn-lg active title-btn">Dodaj użytkownika</a>
+
+<table id="dataTable1" class="NonResponsiveColumn-8">
+	<thead>
+		<tr>
+			<th>@Html.DisplayNameFor(m => m.Users.FirstOrDefault().UserName)</th>
+			<th>@Html.DisplayNameFor(m => m.Users.FirstOrDefault().FirstName)</th>
+			<th>@Html.DisplayNameFor(m => m.Users.FirstOrDefault().LastName)</th>
+			<th>@Html.DisplayNameFor(m => m.Users.FirstOrDefault().Email)</th>
+			<th>@Html.DisplayNameFor(m => m.Users.FirstOrDefault().PhoneNumber)</th>
+			<th>@Html.DisplayNameFor(m => m.Users.FirstOrDefault().Lock)</th>
+			<th>@Html.DisplayNameFor(m => m.Users.FirstOrDefault().Roles)</th>
+			<th>@Html.DisplayNameFor(m => m.Users.FirstOrDefault().Jobs)</th>
+			<th>Opcje</th>
+		</tr>
+	</thead>
+	<tfoot>
+		<tr>
+			<th>@Html.DisplayNameFor(m => m.Users.FirstOrDefault().UserName)</th>
+			<th>@Html.DisplayNameFor(m => m.Users.FirstOrDefault().FirstName)</th>
+			<th>@Html.DisplayNameFor(m => m.Users.FirstOrDefault().LastName)</th>
+			<th>@Html.DisplayNameFor(m => m.Users.FirstOrDefault().Email)</th>
+			<th>@Html.DisplayNameFor(m => m.Users.FirstOrDefault().PhoneNumber)</th>
+			<th>@Html.DisplayNameFor(m => m.Users.FirstOrDefault().Lock)</th>
+			<th>@Html.DisplayNameFor(m => m.Users.FirstOrDefault().Roles)</th>
+			<th>@Html.DisplayNameFor(m => m.Users.FirstOrDefault().Jobs)</th>
+			<th>Opcje</th>
+		</tr>
+	</tfoot>
+	<tbody>
+		@if(Model.Users != null)
+		@foreach (UserViewModel item in Model.Users)
+		{
+			<tr>
+				<td>@Html.DisplayFor(m => item.UserName)</td>
+				<td>@Html.DisplayFor(m => item.FirstName)</td>
+				<td>@Html.DisplayFor(m => item.LastName)</td>
+				<td>@Html.DisplayFor(m => item.Email)</td>
+				<td>@Html.DisplayFor(m => item.PhoneNumber)</td>
+				<td>@Html.DisplayFor(m => item.Lock)</td>
+				<td>
+					@foreach(string role in item.Roles)
+					{
+						@Html.DisplayFor(m => role)
+						<br />
+					}
+				</td>
+				<td>
+					@foreach (var job in item.Jobs)
+					{
+						@Html.ActionLink(job.Name, "Details", "Job", new { id = job.Id }, new { @class = "object-link" })
+						<br />
+					}
+				</td>
+				<td>
+					<div class="btn-group dropdown">
+						<button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							Opcje
+						</button>
+						<div class="dropdown-menu">
+							@Html.ActionLink("Szczegóły", "Details", "User", new { id = item.Id }, new { @class = "dropdown-item" })
+							@Html.ActionLink("Edycja", "Edit", "User", new { id = item.Id }, new { @class = "dropdown-item" })
+							@Html.ActionLink("Zablokuj/Odblokuj", "Lock", "User", new { id = item.Id }, new { @class = "dropdown-item" })
+							@Html.ActionLink("Usuń", "Delete", "User", new { id = item.Id }, new { @class = "dropdown-item" })
+						</div>
+					</div>
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>

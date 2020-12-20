@@ -1,0 +1,94 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>@ViewData["Title"] - WorkflowManager.WebUI</title>
+	<link rel="stylesheet" href="~/lib/bootstrap-v4-rtl/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="~/lib/datatables/css/jquery.dataTables.css" />
+	<link rel="stylesheet" href="~/lib/chosen/chosen.css" />
+	<link rel="stylesheet" href="~/lib/bootstrap-icons-1.2.1/font/bootstrap-icons.css"/>
+	<link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-light border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Gauge Replacement WM</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                    <partial name="_LoginPartial" />
+					@if (User.Identity.IsAuthenticated)
+					{
+				<ul class="navbar-nav flex-grow-1 mr-auto">
+					<li class="nav-item">
+						<a class="nav-link text-dark" asp-area="" asp-controller="Job" asp-action="Index">Zadania</a>
+					</li>
+					@if (User.IsInRole("Admin"))
+					{
+						<li class="nav-item">
+							<a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Index">Użytkownicy</a>
+						</li>
+					}
+					else
+				  if (User.IsInRole("Manager"))
+					{
+						<li class="nav-item">
+							<a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Index">Technicy</a>
+						</li>
+					}
+					<li class="btn-group nav-item shadow-none">
+
+						<a class="nav-link text-dark btn shadow-none" asp-area="" asp-controller="Building" asp-action="Index">Budynki</a>
+						<button type="button" class="btn dropdown-toggle dropdown-toggle-split shadow-none dropOnHover" data-toggle="dropdown" id="buildingNavDrop"></button>
+							<div class="dropdown-menu" id="buildingNavDrop">
+								<a class="dropdown-item" asp-action="Index" asp-controller="WaterMeter">Wodomierze</a>
+								<a class="dropdown-item" asp-action="Index" asp-controller="HeatMeter">Ciepłomierze</a>
+								<a class="dropdown-item" asp-action="Index" asp-controller="CostMeter">Kosztomierze</a>
+							</div>
+					</li>
+
+					<li class="dropdown nav-item shadow-none dropOnHover" >
+						<button type="button" class="btn dropdown-toggle shadow-none" data-toggle="dropdown" id="scheduleNavDropdown" style="margin-top:2px;">
+							Harmonogram
+						</button>
+						<div class="dropdown-menu" aria-labelledby="scheduleNavDropdown">
+							<a class="dropdown-item" asp-action="UserIndex" asp-controller="Schedule">Pracownika</a>
+							<a class="dropdown-item" asp-action="BuildingIndex" asp-controller="Schedule">Budynku</a>
+						</div>
+					</li>
+				</ul>
+					}
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container-fluid">
+        <main role="main" class="pb-3">
+			<div class="container">
+				@RenderBody()
+			</div>
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2020 - WorkflowManager.WebUI - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap-v4-rtl/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/datatables/js/jquery.dataTables.js"></script>
+    <script src="~/lib/chosen/chosen.jquery.js"></script>
+	<script src="~/lib/jqueryui/jquery-ui.js"></script>
+
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/datatablesSetup.js" asp-append-version="true"></script>
+    <script src="~/js/chosensSetup.js" asp-append-version="true"></script>
+	<script src="~/js/scheduleSortableSetup.js" asp-append-version="true"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

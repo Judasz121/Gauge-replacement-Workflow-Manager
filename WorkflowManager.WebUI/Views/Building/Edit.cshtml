@@ -1,0 +1,380 @@
+﻿@model BuildingEditViewModel
+@{
+	ViewData["Title"] = "Edit";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Edycja</h1>
+
+<hr />
+
+<form method="post" asp-action="Edit" asp-controller="Building" enctype="multipart/form-data">
+	@Html.HiddenFor(m => m.Building.Id)
+	@Html.AntiForgeryToken()
+	<div class="form-group">
+		@Html.LabelFor(m => m.Building.City, htmlAttributes: new { @class = "control-label" })
+		@Html.EditorFor(m => m.Building.City, new { htmlAttributes = new { @class = "form-control" } })
+		@Html.ValidationMessageFor(m => m.Building.City, null, new { @class = "text-danger" })
+	</div>
+	<div class="form-group">
+		@Html.LabelFor(m => m.Building.Street)
+		@Html.EditorFor(m => m.Building.Street, new { htmlAttributes = new { @class = "form-control" } })
+		@Html.ValidationMessageFor(m => m.Building.Street, null, new { @class = "text-danger" })
+	</div>
+	<div class="form-group">
+		@Html.LabelFor(m => m.Building.AddressBuildingNum)
+		@Html.EditorFor(m => m.Building.AddressBuildingNum, new { htmlAttributes = new { @class = "form-control" } })
+		@Html.ValidationMessageFor(m => m.Building.AddressBuildingNum, null, new { @class = "text-danger" })
+	</div>
+	<div class="form-group">
+		@Html.LabelFor(m => m.Building.AdditionalAddress)
+		@Html.EditorFor(m => m.Building.AdditionalAddress, new { htmlAttributes = new { @class = "form-control" } })
+		@Html.ValidationMessageFor(m => m.Building.AdditionalAddress, null, new { @class = "text-danger" })
+	</div>
+	<div class="form-group">
+		@Html.LabelFor(m => m.Building.Users)
+		<span class="" style="height: auto;">
+			@Html.ListBoxFor(m => m.SelectedUsersIds, Model.Users, new { @class = "form-control", @id = "chosen", @multiple = true })
+		</span>
+		@Html.ValidationMessageFor(m => m.Building.Users, null, new { @class = "text-danger" })
+	</div>
+	<div class="form-group">
+		@Html.LabelFor(m => m.ResidentSign)
+		<br />
+		<img src="/Building/GetResidentSignImage?id=@Model.Building.Id" class="content-image" id="residentSign" />
+		<br />
+		@Html.EditorFor(m => m.ResidentSign, new { htmlAttributes = new { @class = "input-image", @id = "residentSign" } })
+		@Html.ValidationMessageFor(m => m.Building.ResidentSign, null, new { @class = "text-danger" })
+	</div>
+	<div class="form-group">
+		<h4>
+			@Html.LabelFor(m => m.Building.Jobs)
+		</h4>
+		<span class="float-right">
+			<a asp-action="Create" asp-controller="Job" asp-route-buildingId="@Model.Building.Id" class="btn btn-primary">Dodaj zadanie</a>
+		</span>
+		<table id="dataTable1" class="NonResponsiveColumn-4">
+			<thead>
+				<tr>
+					<th>@Html.DisplayNameFor(m => m.Building.Jobs.FirstOrDefault().Name)</th>
+					<th>@Html.DisplayNameFor(m => m.Building.Jobs.FirstOrDefault().Description)</th>
+					<th>@Html.DisplayNameFor(m => m.Building.Jobs.FirstOrDefault().PredictedDoneDate)</th>
+					<th>@Html.DisplayNameFor(m => m.Building.Jobs.FirstOrDefault().Users)</th>
+					<th>Opcje</th>
+				</tr>
+			</thead>
+			<tfoot>
+				<tr>
+					<th>@Html.DisplayNameFor(m => m.Building.Jobs.FirstOrDefault().Name)</th>
+					<th>@Html.DisplayNameFor(m => m.Building.Jobs.FirstOrDefault().Description)</th>
+					<th>@Html.DisplayNameFor(m => m.Building.Jobs.FirstOrDefault().PredictedDoneDate)</th>
+					<th>@Html.DisplayNameFor(m => m.Building.Jobs.FirstOrDefault().Users)</th>
+					<th>Opcje</th>
+				</tr>
+			</tfoot>
+			<tbody>
+				@if (Model.Building.Jobs != null)
+					@foreach (JobViewModel item in Model.Building.Jobs)
+					{
+						<tr>
+							<th>@Html.DisplayFor(m => item.Name)</th>
+							<th>@Html.DisplayFor(m => item.Description)</th>
+							<th>@Html.DisplayFor(m => item.PredictedDoneDate)</th>
+							<th>@Html.DisplayFor(m => item.Users)</th>
+							<td>
+								<div class="btn-group dropdown">
+									<button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										Opcje
+									</button>
+									<div class="dropdown-menu">
+										@Html.ActionLink("Szczegóły", "Details", "Job", new { id = item.Id }, new { @class = "dropdown-item" })
+										@Html.ActionLink("Edycja", "Edit", "Job", new { id = item.Id }, new { @class = "dropdown-item" })
+										@Html.ActionLink("Usuń", "Delete", "Job", new { id = item.Id }, new { @class = "dropdown-item" })
+									</div>
+								</div>
+							</td>
+						</tr>
+					}
+			</tbody>
+		</table>
+		@Html.ValidationMessageFor(m => m.Building.Jobs, null, new { @class = "text-danger" })
+	</div>
+	<div class="accordion">
+		@*Water Meters*@
+		<div class="card collapse-card">
+			<div class="card-header" data-toggle="collapse" aria-expanded="false" data-target="#waterMetersCollapse">
+				<h5 class="m-0 p-0 float-left">
+					Wodomierze
+				</h5>
+				@if (Model.WaterMetersError)
+				{
+					<span class="text-danger">Wystąpiły błędy w ciepłomierzach</span>
+				}
+				<div class="btn-group float-right" role="group">
+					<a asp-action="Create" asp-controller="WaterMeter" asp-route-buildingId="@Model.Building.Id" class="btn btn-primary btn-sm active title-btn">
+						Dodaj Wodomierz
+					</a>
+					<a asp-action="DownloadWaterMetersPDF" asp-controller="Building" asp-route-id="@Model.Building.Id" target="_blank" class="btn btn-primary btn-sm building-meter-header">
+						<i class="bi bi-download"></i> PDF
+					</a>
+				</div>
+			</div>
+
+			<div id="waterMetersCollapse" class="collapse">
+				<div class="card-body">
+					<div class="form-group">
+						@Html.LabelFor(m => m.Building.MountedWaterMetersAmount)
+						@Html.EditorFor(m => m.Building.MountedWaterMetersAmount, new { htmlAttributes = new { @class = "form-control" } })
+					</div>
+					<div class="form-group">
+						@Html.LabelFor(m => m.Building.DisposedWaterMetersAmount)
+						@Html.EditorFor(m => m.Building.MountedWaterMetersAmount, new { htmlAttributes = new { @class = "form-control" } })
+					</div>
+					<div class="form-group">
+						@Html.LabelFor(m => m.Building.LeftWaterMetersAmount)
+						@Html.EditorFor(m => m.Building.LeftWaterMetersAmount, new { htmlAttributes = new { @class = "form-control" } })
+					</div>
+					<div class="form-group">
+						@Html.LabelFor(m => m.Building.WaterMetersRemarks)
+						@Html.TextAreaFor(m => m.Building.WaterMetersRemarks, new { @class = "form-control" })
+					</div>
+
+					<table id="dataTable3" class="NonResponsiveColumn-5">
+						<thead>
+							<tr>
+								<th>@Html.DisplayNameFor(m => m.Building.WaterMeters.FirstOrDefault().Measurement)</th>
+								<th>@Html.DisplayNameFor(m => m.Building.WaterMeters.FirstOrDefault().DemountState)</th>
+								<th>@Html.DisplayNameFor(m => m.Building.WaterMeters.FirstOrDefault().DemountedWaterMeterNum)</th>
+								<th>@Html.DisplayNameFor(m => m.Building.WaterMeters.FirstOrDefault().MountedWaterMeterNum)</th>
+								<th>@Html.DisplayNameFor(m => m.Building.WaterMeters.FirstOrDefault().MountState)</th>
+								<th>Opcje</th>
+							</tr>
+						</thead>
+						<tfoot>
+							<tr>
+								<th>@Html.DisplayNameFor(m => m.Building.WaterMeters.FirstOrDefault().Measurement)</th>
+								<th>@Html.DisplayNameFor(m => m.Building.WaterMeters.FirstOrDefault().DemountState)</th>
+								<th>@Html.DisplayNameFor(m => m.Building.WaterMeters.FirstOrDefault().DemountedWaterMeterNum)</th>
+								<th>@Html.DisplayNameFor(m => m.Building.WaterMeters.FirstOrDefault().MountedWaterMeterNum)</th>
+								<th>@Html.DisplayNameFor(m => m.Building.WaterMeters.FirstOrDefault().MountState)</th>
+								<th>Opcje</th>
+							</tr>
+						</tfoot>
+						<tbody>
+							@if (Model.Building.WaterMeters != null)
+								@foreach (WaterMeterViewModel item in Model.Building.WaterMeters)
+								{
+									<tr>
+										<td>@Html.DisplayFor(m => item.Measurement)</td>
+										<td>@Html.DisplayFor(m => item.DemountState)</td>
+										<td>@Html.DisplayFor(m => item.DemountedWaterMeterNum)</td>
+										<td>@Html.DisplayFor(m => item.MountedWaterMeterNum)</td>
+										<td>@Html.DisplayFor(m => item.MountState)</td>
+										<td>
+											<div class="btn-group dropdown">
+												<button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+													Opcje
+												</button>
+												<div class="dropdown-menu">
+													@Html.ActionLink("Szczegóły", "Details", "WaterMeter", new { id = item.Id }, new { @class = "dropdown-item" })
+													@Html.ActionLink("Edycja", "Edit", "WaterMeter", new { id = item.Id }, new { @class = "dropdown-item" })
+													@Html.ActionLink("Usuń", "Delete", "WaterMeter", new { id = item.Id }, new { @class = "dropdown-item" })
+												</div>
+											</div>
+										</td>
+									</tr>
+								}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		@*Heat Meters*@
+		<div class="card collapse-card">
+			<div class="card-header" data-toggle="collapse" aria-expanded="false" data-target="#heatMetersCollapse">
+				<h5 class="m-0 p-0 float-left">
+					Ciepłomierze
+				</h5>
+				@if (Model.HeatMetersError)
+				{
+					<span class="text-danger">Wystąpiły błędy w ciepłomierzach</span>
+				}
+				<div class="btn-group float-right" role="group">
+					<a asp-action="Create" asp-controller="HeatMeter" asp-route-buildingId="@Model.Building.Id" class="btn btn-primary btn-sm active title-btn">
+						Dodaj Ciepłomierz
+					</a>
+					<a asp-action="DownloadHeatMetersPDF" asp-controller="Building" asp-route-id="@Model.Building.Id" target="_blank" class="btn btn-primary btn-sm building-meter-header">
+						<i class="bi bi-download"></i> PDF
+					</a>
+				</div>
+			</div>
+
+			<div id="heatMetersCollapse" class="collapse">
+				<div class="card-body">
+					<div class="form-group">
+						@Html.LabelFor(m => m.Building.MountedHeatMetersAmount)
+						@Html.EditorFor(m => m.Building.MountedHeatMetersAmount, new { htmlAttributes = new { @class = "form-control" } })
+					</div>
+					<div class="form-group">
+						@Html.LabelFor(m => m.Building.DisposedHeatMetersAmount)
+						@Html.EditorFor(m => m.Building.DisposedHeatMetersAmount, new { htmlAttributes = new { @class = "form-control" } })
+					</div>
+					<div class="form-group">
+						@Html.LabelFor(m => m.Building.LeftHeatMetersAmount)
+						@Html.EditorFor(m => m.Building.LeftHeatMetersAmount, new { htmlAttributes = new { @class = "form-control" } })
+					</div>
+					<div class="form-group">
+						@Html.LabelFor(m => m.Building.HeatMetersRemarks)
+						@Html.TextAreaFor(m => m.Building.HeatMetersRemarks, new { @class = "form-control"  })
+					</div>
+
+					<table id="dataTable4" class="NonResponsiveColumn-5">
+						<thead>
+							<tr>
+								<th>@Html.DisplayNameFor(m => m.Building.HeatMeters.FirstOrDefault().Measurement)</th>
+								<th>@Html.DisplayNameFor(m => m.Building.HeatMeters.FirstOrDefault().DemountState)</th>
+								<th>@Html.DisplayNameFor(m => m.Building.HeatMeters.FirstOrDefault().DemountedHeatMeterNum)</th>
+								<th>@Html.DisplayNameFor(m => m.Building.HeatMeters.FirstOrDefault().MountedHeatMeterNum)</th>
+								<th>@Html.DisplayNameFor(m => m.Building.HeatMeters.FirstOrDefault().MountState)</th>
+								<th>Opcje</th>
+							</tr>
+						</thead>
+						<tfoot>
+							<tr>
+								<th>@Html.DisplayNameFor(m => m.Building.HeatMeters.FirstOrDefault().Measurement)</th>
+								<th>@Html.DisplayNameFor(m => m.Building.HeatMeters.FirstOrDefault().DemountState)</th>
+								<th>@Html.DisplayNameFor(m => m.Building.HeatMeters.FirstOrDefault().DemountedHeatMeterNum)</th>
+								<th>@Html.DisplayNameFor(m => m.Building.HeatMeters.FirstOrDefault().MountedHeatMeterNum)</th>
+								<th>@Html.DisplayNameFor(m => m.Building.HeatMeters.FirstOrDefault().MountState)</th>
+								<th>Opcje</th>
+							</tr>
+						</tfoot>
+						<tbody>
+							@if (Model.Building.HeatMeters != null)
+								@foreach (HeatMeterViewModel item in Model.Building.HeatMeters)
+								{
+									<tr>
+										<td>@Html.DisplayFor(m => item.Measurement)</td>
+										<td>@Html.DisplayFor(m => item.DemountState)</td>
+										<td>@Html.DisplayFor(m => item.DemountedHeatMeterNum)</td>
+										<td>@Html.DisplayFor(m => item.MountedHeatMeterNum)</td>
+										<td>@Html.DisplayFor(m => item.MountState)</td>
+										<td>
+											<div class="btn-group dropdown">
+												<button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+													Opcje
+												</button>
+												<div class="dropdown-menu">
+													@Html.ActionLink("Szczegóły", "Details", "HeatMeter", new { id = item.Id }, new { @class = "dropdown-item" })
+													@Html.ActionLink("Edycja", "Edit", "HeatMeter", new { id = item.Id }, new { @class = "dropdown-item" })
+													@Html.ActionLink("Usuń", "Delete", "HeatMeter", new { id = item.Id }, new { @class = "dropdown-item" })
+												</div>
+											</div>
+										</td>
+									</tr>
+								}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		@*CostMeters*@
+		<div class="card collapse-card">
+			<div class="card-header" data-toggle="collapse" aria-expanded="false" data-target="#costMetersCollapse">
+				<h5 class="m-0 p-0 float-left">
+					Kosztomierze
+				</h5>
+				@if (Model.CostMetersError)
+				{
+					<span class="text-danger">Wystąpiły błędy w ciepłomierzach</span>
+				}
+				<div class="btn-group float-right" role="group">
+					<a asp-action="Add" asp-controller="WaterMeter" asp-route-buildingId="@Model.Building.Id" class="btn btn-primary btn-sm active title-btn">
+						Dodaj Wodomierz
+					</a>
+
+					<a asp-action="DownloadCostMetersPDF" asp-controller="Building" asp-route-id="@Model.Building.Id" target="_blank" class="btn btn-primary btn-sm building-meter-header">
+						<i class="bi bi-download"></i>  PDF
+					</a>
+				</div>
+			</div>
+
+			<div id="costMetersCollapse" class="collapse">
+				<div class="card-body">
+					<div class="form-group">
+						@Html.LabelFor(m => m.Building.MountedCostMetersAmount)
+						@Html.EditorFor(m => m.Building.MountedCostMetersAmount, new { htmlAttributes = new { @class = "form-control" } })
+					</div>
+					<div class="form-group">
+						@Html.LabelFor(m => m.Building.DisposedCostMetersAmount)
+						@Html.EditorFor(m => m.Building.DisposedCostMetersAmount, new { htmlAttributes = new { @class = "form-control" } })
+					</div>
+					<div class="form-group">
+						@Html.LabelFor(m => m.Building.LeftCostMetersAmount)
+						@Html.EditorFor(m => m.Building.LeftCostMetersAmount, new { htmlAttributes = new { @class = "form-control" } })
+					</div>
+					<div class="form-group">
+						@Html.LabelFor(m => m.Building.CostMetersRemarks)
+						@Html.TextAreaFor(m => m.Building.CostMetersRemarks, new { @class = "form-control" } )
+					</div>
+
+					<table id="dataTable5" class="NonResponsiveColumn-5">
+						<thead>
+							<tr>
+								<th>@Html.DisplayNameFor(m => m.Building.CostMeters.FirstOrDefault().CurrMeasurement)</th>
+								<th>@Html.DisplayNameFor(m => m.Building.CostMeters.FirstOrDefault().CycleEndMeasurement)</th>
+								<th>@Html.DisplayNameFor(m => m.Building.CostMeters.FirstOrDefault().Group)</th>
+								<th>@Html.DisplayNameFor(m => m.Building.CostMeters.FirstOrDefault().Plate)</th>
+								<th>@Html.DisplayNameFor(m => m.Building.CostMeters.FirstOrDefault().DemountedPKONum)</th>
+								<th>@Html.DisplayNameFor(m => m.Building.CostMeters.FirstOrDefault().MountedPKONum)</th>
+								<th>Opcje</th>
+							</tr>
+						</thead>
+						<tfoot>
+							<tr>
+								<th>@Html.DisplayNameFor(m => m.Building.CostMeters.FirstOrDefault().CurrMeasurement)</th>
+								<th>@Html.DisplayNameFor(m => m.Building.CostMeters.FirstOrDefault().CycleEndMeasurement)</th>
+								<th>@Html.DisplayNameFor(m => m.Building.CostMeters.FirstOrDefault().Group)</th>
+								<th>@Html.DisplayNameFor(m => m.Building.CostMeters.FirstOrDefault().Plate)</th>
+								<th>@Html.DisplayNameFor(m => m.Building.CostMeters.FirstOrDefault().DemountedPKONum)</th>
+								<th>@Html.DisplayNameFor(m => m.Building.CostMeters.FirstOrDefault().MountedPKONum)</th>
+								<th>Opcje</th>
+							</tr>
+						</tfoot>
+						<tbody>
+							@if (Model.Building.CostMeters != null)
+								@foreach (CostMeterViewModel item in Model.Building.CostMeters)
+								{
+									<tr>
+										<td>@Html.DisplayFor(m => item.CurrMeasurement)</td>
+										<td>@Html.DisplayFor(m => item.CycleEndMeasurement)</td>
+										<td>@Html.DisplayFor(m => item.Group)</td>
+										<td>@Html.DisplayFor(m => item.Plate)</td>
+										<td>@Html.DisplayFor(m => item.DemountedPKONum)</td>
+										<td>@Html.DisplayFor(m => item.MountedPKONum)</td>
+										<td>
+											<div class="btn-group dropdown">
+												<button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+													Opcje
+												</button>
+												<div class="dropdown-menu">
+													@Html.ActionLink("Szczegóły", "Details", "CostMeter", new { id = item.Id }, new { @class = "dropdown-item" })
+													@Html.ActionLink("Edycja", "Edit", "CostMeter", new { id = item.Id }, new { @class = "dropdown-item" })
+													@Html.ActionLink("Usuń", "Delete", "CostMeter", new { id = item.Id }, new { @class = "dropdown-item" })
+												</div>
+											</div>
+										</td>
+									</tr>
+								}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="form-group submit-button-container">
+		<span class="float-right">
+			<button type="submit" class="btn btn-primary">Zapisz Zmiany</button>
+		</span>
+	</div>
+</form>

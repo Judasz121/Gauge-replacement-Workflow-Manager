@@ -1,0 +1,149 @@
+﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
+for details on configuring this project to bundle and minify static web assets. */
+
+a.navbar-brand {
+  white-space: normal;
+  text-align: center;
+  word-break: break-all;
+}
+
+/* Provide sufficient contrast against white background */
+a {
+  color: #0366d6;
+}
+
+.btn-primary {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+  font-size: 14px;
+}
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.border-top {
+  border-top: 1px solid #e5e5e5;
+}
+.border-bottom {
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.box-shadow {
+  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+button.accept-policy {
+  font-size: 1rem;
+  line-height: inherit;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  /* Margin bottom by footer height */
+  margin-bottom: 60px;
+}
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  white-space: nowrap;
+  line-height: 60px; /* Vertically center the text there */
+}
+/* navigation */
+.dropdown-menu{
+    margin-top:-7px;
+}
+li.dropOnHover:hover>.dropdown-menu{
+    display:block;
+}
+button#buildingNavDrop:hover + .dropdown-menu#buildingNavDrop{
+    display:block;
+}
+#buildingNavDrop:hover{
+    display:block;
+}
+/* body-content */
+.hidden {
+    display: none !important;
+}
+.title-btn {
+    float: right;
+    margin-top: 15px;
+    margin-bottom: 5px;
+}
+.title-selectlist{
+    margin-bottom:5px;
+}
+h1{
+    float:left;
+}
+hr{
+    clear:both;
+}
+.form-control{
+    height: auto;
+}
+a.building-meter-header {
+    height: 100%;
+    margin-top: 15px;
+}
+.card-header {
+    cursor: pointer;
+}
+.form-group.submit-button-container {
+    padding: 15px 0px 35px 0px
+}
+.title-selectlist {
+    width: auto;
+    float: left;
+    clear: both;
+}
+a.disabled {
+    cursor: not-allowed;
+    pointer-events: all;
+}
+/* schedule */
+.job-card {
+    margin-bottom: 10px;
+}
+.job-card .card-header {
+    padding: 10px 20px;
+    cursor:grab;
+}
+.job-card .card-body {
+    padding: 10px 25px;
+}
+.job-card .card-body .row .col-7 hr, .job-card .card-body .row .col hr {
+    margin: 5px 0px;
+}
+#userEditSortable-AssignedJobs, #userEditSortable-AllJobs {
+    list-style-type: none;
+    padding-left: 0;
+    height: 100%;
+    min-height: 110px;
+}
+#buildingEditSortable .job-card {
+}
+#buildingEditSortable{
+    
+}

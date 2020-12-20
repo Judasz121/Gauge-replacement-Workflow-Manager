@@ -1,0 +1,54 @@
+﻿@model UserEditViewModel
+@{
+	ViewData["Title"] = "Edit";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Edycja użytkownika</h1>
+
+<hr />
+
+<form asp-action="Edit" asp-controller="User" method="post" enctype="multipart/form-data">
+	@Html.HiddenFor(m => m.User.Id)
+	@Html.AntiForgeryToken()
+	<div class="form-group">
+		@Html.LabelFor(m => m.User.UserName)
+		@Html.EditorFor(m => m.User.UserName, new { htmlAttributes = new { @class = "form-control" } })
+		@Html.ValidationMessageFor(model => model.User.UserName, "", htmlAttributes: new { @class = "form-text text-danger" } )
+	</div>
+	<div class="form-group">
+		@Html.LabelFor(m => m.User.FirstName)
+		@Html.EditorFor(m => m.User.FirstName, new { htmlAttributes = new { @class = "form-control" } })
+		@Html.ValidationMessageFor(model => model.User.FirstName, "", htmlAttributes: new { @class = "form-text text-danger" } )
+	</div>
+	<div class="form-group">
+		@Html.LabelFor(m => m.User.LastName)
+		@Html.EditorFor(m => m.User.LastName, new { htmlAttributes = new { @class = "form-control" } })
+		@Html.ValidationMessageFor(model => model.User.LastName, "", htmlAttributes: new { @class = "form-text text-danger" } )
+	</div>
+	<div class="form-group">
+		@Html.LabelFor(m => m.User.Email)
+		@Html.EditorFor(m => m.User.Email, new { htmlAttributes = new { @class = "form-control" } })
+		@Html.ValidationMessageFor(model => model.User.Email, "", htmlAttributes: new { @class = "form-text text-danger" } )
+	</div>
+	<div class="form-group">
+		@Html.LabelFor(m => m.User.PhoneNumber)
+		@Html.EditorFor(m => m.User.PhoneNumber, new { htmlAttributes = new { @class = "form-control" } })
+		@Html.ValidationMessageFor(model => model.User.PhoneNumber, "", htmlAttributes: new { @class = "form-text text-danger" } )
+	</div>
+	<div class="form-group">
+		@Html.LabelFor(m => m.Roles)
+		@Html.ListBoxFor(model => model.SelectedRolesIds, Model.Roles, new { @multiple = "", @class = "form-control", @id = "chosen" })
+		@Html.ValidationMessageFor(model => model.Roles, "", htmlAttributes: new { @class = "form-text text-danger" } )
+	</div>
+	<div class="form-group">
+		@Html.LabelFor(m => m.SelectedBuildingsIds)
+		@Html.ListBoxFor(model => model.SelectedBuildingsIds, Model.Buildings, new { @multiple = "", @class = "form-control", @id = "chosen" })
+		@Html.ValidationMessageFor(model => model.SelectedBuildingsIds, "", htmlAttributes: new { @class = "form-text text-danger" } )
+	</div>
+	<div class="form-group submit-button-container">
+		<span class="float-right">
+			<button type="submit" class="btn btn-primary">Zapisz Zmiany</button>
+		</span>
+	</div>
+</form>

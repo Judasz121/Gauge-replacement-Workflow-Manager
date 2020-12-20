@@ -1,0 +1,12 @@
+﻿
+-- Focus Needed -- 
+job filter in scheduleUserEdit ?
+fix predictedWorkTimes not accepting >24h
+fix exception when opening font file in BuildingController.PDFdownloads
+
+ -- Easy -- 
+add error messages to [Required(ErrorMessage = "er msg")] signatures in view models
+To protect from overposting attacks, enable the specific properties you want to bind to ( in controllers methods parameters ) more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+add user defined working hours ?
+add details window in scheduleUserEdit when clicking on a job
+overhaul of ui

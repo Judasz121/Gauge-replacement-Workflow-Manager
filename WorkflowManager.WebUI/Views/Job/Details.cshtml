@@ -1,0 +1,68 @@
+﻿@model JobViewModel
+@{
+	ViewData["Title"] = "Details";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h1>Szczegóły</h1>
+<a asp-action="Edit" asp-controller="Job" asp-route-id="@Model.Id" class="btn btn-primary btn-lg active title-btn">Edytuj</a>
+
+<hr />
+
+<div class="form-group">
+	@Html.LabelFor(m => m.Name)
+	@Html.EditorFor(m => m.Name, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+</div>
+<div class="form-group">
+	@Html.LabelFor(m => m.Building.FullAddress)
+	@Html.ActionLink(Model.Building.FullAddress, "Details", "Building", new { id = Model.IdBuilding }, new { @class = "form-control" })
+</div>
+<div class="form-group">
+	@Html.LabelFor(m => m.Description)
+	@Html.TextAreaFor(m => m.Description, new { @class = "form-control", @readonly = true, @type = "textbox"  })
+</div>
+<div class="form-group">
+	@Html.LabelFor(m => m.Order)
+	@Html.EditorFor(m => m.Order, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+</div>
+<div class="form-group">
+	@Html.LabelFor(m => m.Deleted)
+	@Html.DisplayFor(m => m.Deleted, "", new { htmlAttributes = new { @class = "form-control" } })
+</div>
+<div class="form-group">
+	@Html.LabelFor(m => m.DateAdded)
+	@Html.EditorFor(m => m.DateAdded, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+</div>
+<div class="form-group">
+	@Html.LabelFor(m => m.PredictedDuration)
+	@Html.EditorFor(m => m.PredictedDuration, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+</div>
+<div class="form-group">
+	@Html.LabelFor(m => m.Duration)
+	@Html.EditorFor(m => m.Duration, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+</div>
+<div class="form-group">
+	@Html.LabelFor(m => m.Done)
+	@Html.DisplayFor(m => m.Done, "", new { htmlAttributes = new { @class = "form-control" } })
+</div>
+<div class="form-group">
+	@Html.LabelFor(m => m.PredictedDoneDate)
+	@Html.EditorFor(m => m.PredictedDoneDate, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+</div>
+<div class="form-group">
+	@Html.LabelFor(m => m.DoneDate)
+	@Html.EditorFor(m => m.DoneDate, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+</div>
+<div class="form-group">
+	Przypisani
+	<span class="form-control" style="height: auto;">
+		@if (Model.Users.Count() == 0)
+		{
+			<text>brak</text>
+		}
+		@foreach (UserViewModel user in Model.Users)
+		{
+			@Html.ActionLink(user.FullName, "Details", "User", new { id = user.Id }, new { @class = "" })
+			<br />
+		}
+	</span>
+</div>

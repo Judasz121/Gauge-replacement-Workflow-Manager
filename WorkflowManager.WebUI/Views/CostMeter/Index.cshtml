@@ -1,0 +1,61 @@
+﻿@model CostMeterIndexViewModel
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Kosztomierze</h1>
+<a asp-action="Create" asp-controller="CostMeter" class="btn btn-primary btn-lg active title-btn">Dodaj Kosztomierz</a>
+<form method="post" asp-controller="CostMeter" asp-action="Index" style="clear:both;">
+    Pokaż kosztomierze dla
+    @Html.DropDownListFor(m => m.BuildingId, Model.BuildingsSelectList, "Wszystkich budynków", htmlAttributes: new { @onchange = "this.form.submit()" })
+</form>
+<table id="dataTable1" class="NonResponsiveColumn-6">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(m => m.CostMeters.FirstOrDefault().Group)</th>
+            <th>@Html.DisplayNameFor(m => m.CostMeters.FirstOrDefault().DemountedPKONum)</th>
+            <th>@Html.DisplayNameFor(m => m.CostMeters.FirstOrDefault().MountedPKONum)</th>
+            <th>@Html.DisplayNameFor(m => m.CostMeters.FirstOrDefault().CurrMeasurement)</th>
+            <th>@Html.DisplayNameFor(m => m.CostMeters.FirstOrDefault().CycleEndMeasurement)</th>
+            <th>@Html.DisplayNameFor(m => m.CostMeters.FirstOrDefault().Plate)</th>
+            <th>Opcje</th>
+        </tr>
+    </thead>
+    <tfoot>
+		<tr>
+			<th>@Html.DisplayNameFor(m => m.CostMeters.FirstOrDefault().Group)</th>
+			<th>@Html.DisplayNameFor(m => m.CostMeters.FirstOrDefault().DemountedPKONum)</th>
+			<th>@Html.DisplayNameFor(m => m.CostMeters.FirstOrDefault().MountedPKONum)</th>
+			<th>@Html.DisplayNameFor(m => m.CostMeters.FirstOrDefault().CurrMeasurement)</th>
+			<th>@Html.DisplayNameFor(m => m.CostMeters.FirstOrDefault().CycleEndMeasurement)</th>
+			<th>@Html.DisplayNameFor(m => m.CostMeters.FirstOrDefault().Plate)</th>
+			<th>Opcje</th>
+		</tr>
+    </tfoot>
+    <tbody>
+        @foreach (CostMeterViewModel item in Model.CostMeters)
+		{
+        <tr>
+            <td>@Html.DisplayFor(m => item.Group)</td>
+            <td>@Html.DisplayFor(m => item.DemountedPKONum)</td>
+            <td>@Html.DisplayFor(m => item.MountedPKONum)</td>
+            <td>@Html.DisplayFor(m => item.CurrMeasurement)</td>
+            <td>@Html.DisplayFor(m => item.CycleEndMeasurement)</td>
+            <td>@Html.DisplayFor(m => item.Plate)</td>
+            <td>
+                <div class="btn-group dropdown">
+                    <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Opcje
+                    </button>
+                    <div class="dropdown-menu">
+                        @Html.ActionLink("Szczegóły", "Details", "CostMeter", new { id = item.Id }, new { @class = "dropdown-item" })
+                        @Html.ActionLink("Edycja", "Edit", "CostMeter", new { id = item.Id }, new { @class = "dropdown-item" })
+                        @Html.ActionLink("Usuń", "Delete", "CostMeter", new { id = item.Id }, new { @class = "dropdown-item" })
+                    </div>
+                </div>
+            </td>
+        </tr>
+		}
+    </tbody>
+</table>

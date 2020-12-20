@@ -1,0 +1,43 @@
+﻿@model HeatMeterViewModel
+@{
+	ViewData["Title"] = "Details";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Szczegóły</h1>
+<a asp-action="Edit" asp-controller="HeatMeter" asp-route-id="@Model.Id" class="btn btn-primary btn-lg active title-btn">Edytuj</a>
+
+<hr />
+
+<div class="form-group">
+	@Html.LabelFor(m => m.Building.FullAddress)
+	@Html.ActionLink(Model.Building.FullAddress, "Details", "Building", Model.BuildingId, new { @class = "form-control" })
+</div>
+<div class="form-group">
+	@Html.LabelFor(m => m.Measurement)
+	@Html.EditorFor(m => m.Measurement, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+</div>
+<div class="form-group">
+	@Html.LabelFor(m => m.DemountState)
+	@Html.EditorFor(m => m.DemountState, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+</div>
+<div class="form-group">
+	@Html.LabelFor(m => m.MountState)
+	@Html.EditorFor(m => m.MountState, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+</div>
+<div class="form-group">
+	@Html.LabelFor(m => m.DemountedHeatMeterNum)
+	@Html.EditorFor(m => m.DemountedHeatMeterNum, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+</div>
+<div class="form-group">
+	@Html.LabelFor(m => m.MountedHeatMeterNum)
+	@Html.EditorFor(m => m.MountedHeatMeterNum, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+</div>
+<div class="form-group">
+	@Html.LabelFor(m => m.SealNum)
+	@Html.EditorFor(m => m.SealNum, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+</div>
+<div class="form-group">
+	@Html.LabelFor(m => m.SensorSealNum)
+	@Html.EditorFor(m => m.SensorSealNum, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+</div>

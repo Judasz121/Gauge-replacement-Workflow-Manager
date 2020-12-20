@@ -1,0 +1,57 @@
+﻿@model CostMeterEditViewModel 
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Edycja miernika wody</h1>
+<hr />
+<form method="post" asp-action="Edit" asp-controller="CostMeter" enctype="multipart/form-data">
+	@Html.HiddenFor(m => m.CostMeter.Id)
+	@Html.AntiForgeryToken()
+	<div class="form-group">
+		@Html.LabelFor(m => m.CostMeter.BuildingId)
+		@Html.DropDownListFor(m => m.CostMeter.BuildingId, Model.BuildingsSelectList, "Wybierz budynek", new { @class = "form-control" })
+		@Html.ValidationMessageFor(m => m.CostMeter.BuildingId, "", htmlAttributes: new { @class = "form-text text-danger" })
+	</div>
+	<div class="form-group">
+		@Html.LabelFor(m => m.CostMeter.Group)
+		@Html.EditorFor(model => model.CostMeter.Group, new { htmlattributes = new { @class = "form-control" } })
+		@Html.ValidationMessageFor(m => m.CostMeter.Group, "", htmlAttributes: new { @class = "form-text text-danger" })
+	</div>
+	<div class="form-group">
+		@Html.LabelFor(m => m.CostMeter.Description)
+		@Html.TextBoxFor(model => model.CostMeter.Description, new { htmlattributes = new { @class = "form-control" } })
+		@Html.ValidationMessageFor(m => m.CostMeter.Description, "", htmlAttributes: new { @class = "form-text text-danger" })
+	</div>
+	<div class="form-group">
+		@Html.LabelFor(m => m.CostMeter.DemountedPKONum)
+		@Html.EditorFor(model => model.CostMeter.DemountedPKONum, new { htmlattributes = new { @class = "form-control" } })
+		@Html.ValidationMessageFor(m => m.CostMeter.DemountedPKONum, "", htmlAttributes: new { @class = "form-text text-danger" })
+	</div>
+	<div class="form-group">
+		@Html.LabelFor(m => m.CostMeter.MountedPKONum)
+		@Html.EditorFor(model => model.CostMeter.MountedPKONum, new { htmlattributes = new { @class = "form-control" } })
+		@Html.ValidationMessageFor(m => m.CostMeter.MountedPKONum, "", htmlAttributes: new { @class = "form-text text-danger" })
+	</div>
+	<div class="form-group">
+		@Html.LabelFor(m => m.CostMeter.CurrMeasurement)
+		@Html.EditorFor(model => model.CostMeter.CurrMeasurement, new { htmlattributes = new { @class = "form-control" } })
+		@Html.ValidationMessageFor(m => m.CostMeter.CurrMeasurement, "", htmlAttributes: new { @class = "form-text text-danger" })
+	</div>
+	<div class="form-group">
+		@Html.LabelFor(m => m.CostMeter.CycleEndMeasurement)
+		@Html.EditorFor(model => model.CostMeter.CycleEndMeasurement, new { htmlattributes = new { @class = "form-control" } })
+		@Html.ValidationMessageFor(m => m.CostMeter.CycleEndMeasurement, "", htmlAttributes: new { @class = "form-text text-danger" })
+	</div>
+	<div class="form-group">
+		@Html.LabelFor(m => m.CostMeter.Plate)
+		@Html.EditorFor(model => model.CostMeter.Plate, new { htmlattributes = new { @class = "form-control" } })
+		@Html.ValidationMessageFor(m => m.CostMeter.Plate, "", htmlAttributes: new { @class = "form-text text-danger" })
+	</div>
+	<div class="form-group submit-button-container">
+		<span class="float-right">
+			<button type="submit" class="btn btn-primary">Zapisz</button>
+		</span>
+	</div>
+</form>

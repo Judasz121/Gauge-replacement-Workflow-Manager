@@ -1,0 +1,15 @@
+﻿using Microsoft.AspNetCore.Identity;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Text;
+
+namespace WorkflowManager.EFCoreLibrary.Entities
+{
+	public class UserRole : IdentityUserRole<string>
+	{
+		public virtual Role Role { get; set; }
+
+		public virtual User User { get; set; }
+	}
+}

@@ -1,0 +1,97 @@
+﻿@model ScheduleBuildingIndexViewModel
+@{
+	ViewData["Title"] = "BuildingIndex";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<form method="get" asp-action="BuildingIndex" asp-controller="Schedule">
+	<h1>Harmonogram dla</h1>
+	@if (User.IsInRole("Manager") || User.IsInRole("Admin"))
+	{
+		<a asp-action="BuildingEdit" asp-controller="Schedule" asp-route-id="@Model.BuildingId" class="btn btn-primary btn-lg active title-btn" id="editSchedule">Edytuj Priorytet zadań</a>
+	}
+	<br />
+	@Html.DropDownListFor(m => m.BuildingId, Model.BuildingSelectList, "Wybierz budynek", new { @class = "title-selectlist form-control", @onchange = "this.form.submit()", @id = "buildingSelect" })
+</form>
+
+<script>
+	if (document.getElementById("buildingSelect").value == "")
+		document.getElementById("editSchedule").classList.add("disabled");
+
+</script>
+<hr />
+
+<table id="dataTable" class="NonResponsiveColumn-8 DefaultSort-7-asc">
+	<thead>
+		<tr>
+			<th>@Html.DisplayNameFor(m => m.BuildingJobs.FirstOrDefault().Order)</th>
+			<th>@Html.DisplayNameFor(m => m.BuildingJobs.FirstOrDefault().Name)</th>
+			<th>@Html.DisplayNameFor(m => m.BuildingJobs.FirstOrDefault().Done)</th>
+			<th>@Html.DisplayNameFor(m => m.BuildingJobs.FirstOrDefault().Users)</th>
+			<th>@Html.DisplayNameFor(m => m.BuildingJobs.FirstOrDefault().Description)</th>
+			<th>@Html.DisplayNameFor(m => m.BuildingJobs.FirstOrDefault().DateAdded)</th>
+			<th>@Html.DisplayNameFor(m => m.BuildingJobs.FirstOrDefault().PredictedDuration)</th>
+			<th>@Html.DisplayNameFor(m => m.BuildingJobs.FirstOrDefault().PredictedDoneDate)</th>
+			<th>@Html.DisplayNameFor(m => m.BuildingJobs.FirstOrDefault().DoneDate)</th>
+			<th>Opcje</th>
+		</tr>
+	</thead>
+	<tfoot>
+		<tr>
+			<th>@Html.DisplayNameFor(m => m.BuildingJobs.FirstOrDefault().Order)</th>
+			<th>@Html.DisplayNameFor(m => m.BuildingJobs.FirstOrDefault().Name)</th>
+			<th>@Html.DisplayNameFor(m => m.BuildingJobs.FirstOrDefault().Done)</th>
+			<th>@Html.DisplayNameFor(m => m.BuildingJobs.FirstOrDefault().Users)</th>
+			<th>@Html.DisplayNameFor(m => m.BuildingJobs.FirstOrDefault().Description)</th>
+			<th>@Html.DisplayNameFor(m => m.BuildingJobs.FirstOrDefault().DateAdded)</th>
+			<th>@Html.DisplayNameFor(m => m.BuildingJobs.FirstOrDefault().PredictedDuration)</th>
+			<th>@Html.DisplayNameFor(m => m.BuildingJobs.FirstOrDefault().PredictedDoneDate)</th>
+			<th>@Html.DisplayNameFor(m => m.BuildingJobs.FirstOrDefault().DoneDate)</th>
+			<th>Opcje</th>
+		</tr>
+	</tfoot>
+	<tbody>
+		@foreach(JobViewModel item in Model.BuildingJobs)
+		{
+		<tr>
+			<td>@Html.DisplayFor(m => item.Order)</td>
+			<td>@Html.DisplayFor(m => item.Name)</td>
+			<td>
+				@Html.DisplayFor(m => item.Done)
+				@if (item.Done)
+				{
+					<span class="hidden">tak 1 true</span>
+				}
+				else
+				{
+					<span class="hidden">nie 0 false</span>
+				}
+			</td>
+			<td>
+				@foreach (UserViewModel user in item.Users)
+				{
+					@Html.ActionLink(user.FullName, "Details", "User", new { id = user.Id }, new { @class = "object-link" })
+					<br />
+				}
+			</td>
+			<td>@Html.DisplayFor(m => item.Description)</td>
+			<td>@Html.DisplayFor(m => item.DateAdded)</td>
+			<td>@Html.DisplayFor(m => item.PredictedDuration)</td>
+			<td>@Html.DisplayFor(m => item.PredictedDoneDate)</td>
+			<td>@Html.DisplayFor(m => item.DoneDate)</td>
+			<td>
+				<div class="btn-group dropdown">
+					<button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						Opcje
+					</button>
+					<div class="dropdown-menu">
+						@Html.ActionLink("Szczegóły", "Details", "Job", new { id = item.Id }, new { @class = "dropdown-item" })
+						@Html.ActionLink("Edycja", "Edit", "Job", new { id = item.Id }, new { @class = "dropdown-item" })
+						@Html.ActionLink("Usuń", "Delete", "Job", new { id = item.Id }, new { @class = "dropdown-item" })
+						@Html.ActionLink("Zrobione", "Done", "Job", new { id = item.Id }, new { @class = "dropdown-item" })
+					</div>
+				</div>
+			</td>
+		</tr>
+		}
+	</tbody>
+</table>

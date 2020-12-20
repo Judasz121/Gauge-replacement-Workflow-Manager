@@ -1,0 +1,47 @@
+﻿@model CostMeterViewModel
+@{
+	ViewData["Title"] = "Details";
+	Layout = "~/Views/Shared/_Layout.csHtml";
+}
+
+<h1>Szczegóły</h1>
+<a asp-action="Edit" asp-controller="CostMeter" asp-route-id="@Model.Id" class="btn btn-primry btn-lg active title-btn">Edytuj</a>
+
+<hr />
+<div class="form-group">
+	@Html.LabelFor(m => m.BuildingId)
+	@Html.ActionLink(Model.Building.FullAddress, "Details", "Building", Model.BuildingId, new { @class = "form-control" })
+</div>
+<div class="form-group">
+	@Html.LabelFor(m => m.Group)
+	@Html.EditorFor(model => model.Group, new { Htmlattributes = new { @class = "form-control", @readonly = true } })
+	
+</div>
+<div class="form-group">
+	@Html.LabelFor(m => m.Description)
+	@Html.TextAreaFor(model => model.Description,  new { @class = "form-control", @readonly = true } )
+	
+</div>
+<div class="form-group">
+	@Html.LabelFor(m => m.DemountedPKONum)
+	@Html.EditorFor(model => model.DemountedPKONum, new { Htmlattributes = new { @class = "form-control", @readonly = true } })
+	
+</div>
+<div class="form-group">
+	@Html.LabelFor(m => m.MountedPKONum)
+	@Html.EditorFor(model => model.MountedPKONum, new { Htmlattributes = new { @class = "form-control", @readonly = true } })
+	
+</div>
+<div class="form-group">
+	@Html.LabelFor(m => m.CurrMeasurement)
+	@Html.EditorFor(model => model.CurrMeasurement, new { Htmlattributes = new { @class = "form-control", @readonly = true } })
+	
+</div>
+<div class="form-group">
+	@Html.LabelFor(m => m.CycleEndMeasurement)
+	@Html.EditorFor(model => model.CycleEndMeasurement, new { Htmlattributes = new { @class = "form-control", @readonly = true } })
+</div>
+<div class="form-group">
+	@Html.LabelFor(m => m.Plate)
+	@Html.EditorFor(model => model.Plate, new { Htmlattributes = new { @class = "form-control", @readonly = true } })
+</div>
