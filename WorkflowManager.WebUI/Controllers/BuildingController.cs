@@ -32,6 +32,7 @@ using iText.Layout;
 using iText.IO.Font;
 using iText.Layout.Layout;
 using Microsoft.AspNetCore.Hosting;
+using iText.IO.Font.Constants;
 
 namespace WorkflowManager.WebUI.Controllers
 {
@@ -297,24 +298,17 @@ namespace WorkflowManager.WebUI.Controllers
             var writer = new PdfWriter(ms);
             var pdf = new PdfDocument(writer);
             var document = new Document(pdf);
-			#region nullexception solving
-			FontProgram fp = FontProgramFactory.CreateFont(Path.Combine(_webHostEnvironment.ContentRootPath, "wwwroot", "fonts", "Calibri Regular.ttf"));
-			//string fontFilePath = Path.Combine(_webHostEnvironment.ContentRootPath, "wwwroot", "fonts", "Calibri Regular.ttf");
-   //         byte[] fontFileBytes;
-   //         using (FileStream fs = new FileStream(fontFilePath, FileMode.Open, FileAccess.Read))
-			//{
-   //             byte[] buffer = new byte[fs.Length];
-   //             fs.Read(buffer, 0, (int)fs.Length);
-   //             fontFileBytes = buffer;
-			//}
-   //         FontProgram fp = FontProgramFactory.CreateFont(fontFileBytes);
-   //         PdfFont CalibriRegular = PdfFontFactory.CreateFont(fp);
 
-            PdfFont CalibriRegular = PdfFontFactory.CreateFont(fp/*, PdfEncodings.CP1250, true*/);
-            //PdfFont CalibriRegular = PdfFontFactory.CreateFont(fp);
-            #endregion
-            fp = FontProgramFactory.CreateFont(Path.Combine(_webHostEnvironment.ContentRootPath, "wwwroot", "fonts", "Calibri Bold.ttf"));
-            PdfFont CalibriBold = PdfFontFactory.CreateFont(fp, PdfEncodings.CP1250, true);
+            PdfFont CalibriRegular = null;
+            PdfFont CalibriBold = null;
+            try
+            {
+                FontProgram fp = FontProgramFactory.CreateFont(Path.Combine(_webHostEnvironment.ContentRootPath, "wwwroot", "fonts", "Calibri Regular.ttf"));
+                CalibriRegular = PdfFontFactory.CreateFont(fp, PdfEncodings.CP1250, true);
+                fp = FontProgramFactory.CreateFont(Path.Combine(_webHostEnvironment.ContentRootPath, "wwwroot", "fonts", "Calibri Bold.ttf"));
+                CalibriBold = PdfFontFactory.CreateFont(fp, PdfEncodings.CP1250, true);
+            }
+            catch(System.NullReferenceException exc) { }
 
             Color backgroundGray = new DeviceRgb(208, 206, 206);
             Color headerGray = new DeviceRgb(150, 150, 150);
@@ -356,7 +350,6 @@ namespace WorkflowManager.WebUI.Controllers
                 .SetFontSize(11)
                 .SetWidth(UnitValue.CreatePercentValue((float)28.75))
             ;
-            //Image headerLogo = new Image(ImageDataFactory.Create(Server.MapPath(@"/Images/progmatBlackWhiteLogo.png")))
             Image headerLogo = new Image(ImageDataFactory.Create(Path.Combine(_webHostEnvironment.ContentRootPath, "wwwroot", "images", "companylogo.png")))
                 .SetWidth(UnitValue.CreatePercentValue(100))
             ;
@@ -379,8 +372,10 @@ namespace WorkflowManager.WebUI.Controllers
             table.AddCell(infoCell.Clone(false).Add(new Paragraph(new Text("Ulica:")).SetFixedLeading(pgphlead)));
             table.AddCell(dataCell.Clone(false).Add(new Paragraph(new Text(model.Street)).SetFixedLeading(pgphlead)));
             table.AddCell(infoCell.Clone(false).Add(new Paragraph(new Text("Nr Lokalu:")).SetFixedLeading(pgphlead)));
-            table.AddCell(dataCell.Clone(false).Add(new Paragraph(new Text(model.AdditionalAddress)).SetFixedLeading(pgphlead)));
-
+           if(model.AdditionalAddress != null)
+                table.AddCell(dataCell.Clone(false).Add(new Paragraph(new Text(model.AdditionalAddress)).SetFixedLeading(pgphlead)));
+           else
+                table.AddCell(dataCell.Clone(false).Add(new Paragraph(new Text("")).SetFixedLeading(pgphlead)));
             document.Add(table);
             #endregion
 
@@ -514,7 +509,6 @@ namespace WorkflowManager.WebUI.Controllers
 
             LineSeparator LS = new LineSeparator(new SolidLine(1))
                 .SetRelativePosition(0, 0, 0, 65)
-            //.SetMarginTop(13);
             ;
             document.Add(LS);
 
@@ -535,7 +529,6 @@ namespace WorkflowManager.WebUI.Controllers
             table = new Table(3)
                 .SetHorizontalAlignment(HorizontalAlignment.CENTER)
                 .SetRelativePosition(0, 0, 0, 49)
-            // .SetWidth(UnitValue.CreatePercentValue(50))
             ;
             bool IsResidentSignNull;
             Image ResidentSign = null;
@@ -578,7 +571,7 @@ namespace WorkflowManager.WebUI.Controllers
 
             document.Close();
             byte[] fileBytes = ms.ToArray();
-            return File(fileBytes, System.Net.Mime.MediaTypeNames.Application.Pdf, "Protokół montażowy wodomierzy");
+            return File(fileBytes, System.Net.Mime.MediaTypeNames.Application.Pdf, "Protokół montażowy wodomierzy.pdf");
         }
 
         [HttpGet]
@@ -596,12 +589,17 @@ namespace WorkflowManager.WebUI.Controllers
             var pdf = new PdfDocument(writer);
             var document = new Document(pdf);
 
-            //FontProgram fp = FontProgramFactory.CreateFont(Server.MapPath(@"/fonts/Calibri Regular.ttf"));
-            FontProgram fp = FontProgramFactory.CreateFont(Path.Combine(_webHostEnvironment.ContentRootPath, "wwwroot", "fonts", "Calibri Regular.ttf"));
-            PdfFont CalibriRegular = PdfFontFactory.CreateFont(fp, PdfEncodings.CP1250, true);
-            //fp = FontProgramFactory.CreateFont(Server.MapPath(@"/fonts/Calibri Bold.ttf"));
-            fp = FontProgramFactory.CreateFont(Path.Combine(_webHostEnvironment.ContentRootPath, "wwwroot", "fonts", "Calibri Bold.ttf"));
-            PdfFont CalibriBold = PdfFontFactory.CreateFont(fp, PdfEncodings.CP1250, true);
+            PdfFont CalibriRegular = null;
+            PdfFont CalibriBold = null;
+            try
+            {
+
+                FontProgram fp = FontProgramFactory.CreateFont(Path.Combine(_webHostEnvironment.ContentRootPath, "wwwroot", "fonts", "Calibri Regular.ttf"));
+                CalibriRegular = PdfFontFactory.CreateFont(fp, PdfEncodings.CP1250, true);
+                fp = FontProgramFactory.CreateFont(Path.Combine(_webHostEnvironment.ContentRootPath, "wwwroot", "fonts", "Calibri Bold.ttf"));
+                CalibriBold = PdfFontFactory.CreateFont(fp, PdfEncodings.CP1250, true);
+            }
+            catch(NullReferenceException exc) { }
 
             Color backgroundGray = new DeviceRgb(208, 206, 206);
             Color headerGray = new DeviceRgb(150, 150, 150);
@@ -642,7 +640,6 @@ namespace WorkflowManager.WebUI.Controllers
                 .SetFontSize(11)
                 .SetWidth(UnitValue.CreatePercentValue((float)28.75))
             ;
-            //Image headerLogo = new Image(ImageDataFactory.Create(Server.MapPath(@"/Images/progmatBlackWhiteLogo.png")))
             Image headerLogo = new Image(ImageDataFactory.Create(Path.Combine(_webHostEnvironment.ContentRootPath, "wwwroot", "images", "companylogo.png")))
                 .SetWidth(UnitValue.CreatePercentValue(100))
             ;
@@ -665,7 +662,10 @@ namespace WorkflowManager.WebUI.Controllers
             table.AddCell(infoCell.Clone(false).Add(new Paragraph(new Text("Ulica:")).SetFixedLeading(pgphlead)));
             table.AddCell(dataCell.Clone(false).Add(new Paragraph(new Text(model.Street)).SetFixedLeading(pgphlead)));
             table.AddCell(infoCell.Clone(false).Add(new Paragraph(new Text("Nr Lokalu:")).SetFixedLeading(pgphlead)));
-            table.AddCell(dataCell.Clone(false).Add(new Paragraph(new Text(model.AdditionalAddress)).SetFixedLeading(pgphlead)));
+            if(model.AdditionalAddress != null)
+                table.AddCell(dataCell.Clone(false).Add(new Paragraph(new Text(model.AdditionalAddress)).SetFixedLeading(pgphlead)));
+            else
+                table.AddCell(dataCell.Clone(false).Add(new Paragraph(new Text("")).SetFixedLeading(pgphlead)));
 
             document.Add(table);
             #endregion
@@ -860,7 +860,7 @@ namespace WorkflowManager.WebUI.Controllers
 
             document.Close();
             byte[] fileBytes = ms.ToArray();
-            return File(fileBytes, System.Net.Mime.MediaTypeNames.Application.Pdf, "Protokół montażowy kosztomierzy");
+            return File(fileBytes, System.Net.Mime.MediaTypeNames.Application.Pdf, "Protokół montażowy kosztomierzy.pdf");
         }
 
         [HttpGet]
@@ -878,12 +878,16 @@ namespace WorkflowManager.WebUI.Controllers
             var pdf = new PdfDocument(writer);
             var document = new Document(pdf);
 
-            //FontProgram fp = FontProgramFactory.CreateFont(Server.MapPath(@"/fonts/Calibri Regular.ttf"));
-            FontProgram fp = FontProgramFactory.CreateFont(Path.Combine(_webHostEnvironment.ContentRootPath, "fonts", "Calibri Regular.ttf"));
-            PdfFont CalibriRegular = PdfFontFactory.CreateFont(fp, PdfEncodings.CP1250, true);
-            //fp = FontProgramFactory.CreateFont(Server.MapPath(@"/fonts/Calibri Bold.ttf"));
-            fp = FontProgramFactory.CreateFont(Path.Combine(_webHostEnvironment.ContentRootPath, "fonts", "Calibri Bold.ttf"));
-            PdfFont CalibriBold = PdfFontFactory.CreateFont(fp, PdfEncodings.CP1250, true);
+            PdfFont CalibriRegular = null;
+            PdfFont CalibriBold = null;
+            try
+            {
+                FontProgram fp = FontProgramFactory.CreateFont(Path.Combine(_webHostEnvironment.ContentRootPath, "fonts", "Calibri Regular.ttf"));
+                CalibriRegular = PdfFontFactory.CreateFont(fp, PdfEncodings.CP1250, true);
+                fp = FontProgramFactory.CreateFont(Path.Combine(_webHostEnvironment.ContentRootPath, "fonts", "Calibri Bold.ttf"));
+                CalibriBold = PdfFontFactory.CreateFont(fp, PdfEncodings.CP1250, true);
+            }
+            catch(NullReferenceException exc) { }
 
             Color backgroundGray = new DeviceRgb(208, 206, 206);
             Color headerGray = new DeviceRgb(150, 150, 150);
@@ -946,7 +950,10 @@ namespace WorkflowManager.WebUI.Controllers
             table.AddCell(infoCell.Clone(false).Add(new Paragraph(new Text("Ulica:")).SetFixedLeading(pgphlead)));
             table.AddCell(dataCell.Clone(false).Add(new Paragraph(new Text(model.Street)).SetFixedLeading(pgphlead)));
             table.AddCell(infoCell.Clone(false).Add(new Paragraph(new Text("Nr Lokalu:")).SetFixedLeading(pgphlead)));
-            table.AddCell(dataCell.Clone(false).Add(new Paragraph(new Text(model.AdditionalAddress)).SetFixedLeading(pgphlead)));
+            if(model.AdditionalAddress != null)
+                table.AddCell(dataCell.Clone(false).Add(new Paragraph(new Text(model.AdditionalAddress)).SetFixedLeading(pgphlead)));
+            else
+                table.AddCell(dataCell.Clone(false).Add(new Paragraph(new Text(model.AdditionalAddress)).SetFixedLeading(pgphlead)));
 
             document.Add(table);
             #endregion
@@ -1112,7 +1119,7 @@ namespace WorkflowManager.WebUI.Controllers
 
             document.Close();
             byte[] fileBytes = ms.ToArray();
-            return File(fileBytes, System.Net.Mime.MediaTypeNames.Application.Pdf, "Protokół montażowy PKO");
+            return File(fileBytes, System.Net.Mime.MediaTypeNames.Application.Pdf, "Protokół montażowy PKO.pdf");
         }
 
 

@@ -1243,8 +1243,4 @@
     <ProjectReference Include="..\WorkflowManager.EFCoreLibrary\WorkflowManager.EFCoreLibrary.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="wwwroot\images\" />
-  </ItemGroup>
-
 </Project>
