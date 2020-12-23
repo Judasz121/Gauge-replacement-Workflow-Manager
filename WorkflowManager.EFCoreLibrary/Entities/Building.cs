@@ -80,7 +80,7 @@ namespace WorkflowManager.EFCoreLibrary.Entities
         public int? MountedOrReplacedReductionsAmount { get; set; }
         public int? MountedOrReplacedValvesAmount { get; set; }
         public int? MountedCheckValvesAmount { get; set; }
-        public int? ReplacedTeesAmount { get; set; }
+        public int? ReplacedJointsAmount { get; set; }
         public int? SealedWaterMetersAmount { get; set; }
 
 

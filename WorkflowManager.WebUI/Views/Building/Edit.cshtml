@@ -41,7 +41,7 @@
 	<div class="form-group">
 		@Html.LabelFor(m => m.ResidentSign)
 		<br />
-		<img src="/Building/GetResidentSignImage?id=@Model.Building.Id" class="content-image" id="residentSign" />
+		<img src="@Model.Building.ResidentSign" class="content-image form-control" id="residentSign" />
 		<br />
 		@Html.EditorFor(m => m.ResidentSign, new { htmlAttributes = new { @class = "input-image", @id = "residentSign" } })
 		@Html.ValidationMessageFor(m => m.Building.ResidentSign, null, new { @class = "text-danger" })
@@ -99,6 +99,21 @@
 		</table>
 		@Html.ValidationMessageFor(m => m.Building.Jobs, null, new { @class = "text-danger" })
 	</div>
+	<div class="form-group">
+		@Html.LabelFor(m => m.Building.MountedOrReplacedFittingsAmount)
+		@Html.EditorFor(m => m.Building.MountedOrReplacedFittingsAmount, new { htmlAttributes = new { @class = "form-control" } })
+		@Html.ValidationMessageFor(m => m.Building.MountedOrReplacedFittingsAmount, null, new { @class = "text-danger" })
+	</div>
+	<div class="form-group">
+		@Html.LabelFor(m => m.Building.MountedOrReplacedReductionsAmount)
+		@Html.EditorFor(m => m.Building.MountedOrReplacedReductionsAmount, new { htmlAttributes = new { @class = "form-control" } })
+		@Html.ValidationMessageFor(m => m.Building.MountedOrReplacedReductionsAmount, null, new { @class = "text-danger" })
+	</div>
+	<div class="form-group">
+		@Html.LabelFor(m => m.Building.MountedOrReplacedValvesAmount)
+		@Html.EditorFor(m => m.Building.MountedOrReplacedValvesAmount, new { htmlAttributes = new { @class = "form-control" } })
+		@Html.ValidationMessageFor(m => m.Building.MountedOrReplacedValvesAmount, null, new { @class = "text-danger" })
+	</div>
 	<div class="accordion">
 		@*Water Meters*@
 		<div class="card collapse-card">
@@ -125,19 +140,34 @@
 					<div class="form-group">
 						@Html.LabelFor(m => m.Building.MountedWaterMetersAmount)
 						@Html.EditorFor(m => m.Building.MountedWaterMetersAmount, new { htmlAttributes = new { @class = "form-control" } })
+						@Html.ValidationMessageFor(m => m.Building.MountedWaterMetersAmount, null, new { @class = "text-danger" })
 					</div>
 					<div class="form-group">
 						@Html.LabelFor(m => m.Building.DisposedWaterMetersAmount)
-						@Html.EditorFor(m => m.Building.MountedWaterMetersAmount, new { htmlAttributes = new { @class = "form-control" } })
+						@Html.EditorFor(m => m.Building.DisposedWaterMetersAmount, new { htmlAttributes = new { @class = "form-control" } })
+						@Html.ValidationMessageFor(m => m.Building.DisposedWaterMetersAmount, null, new { @class = "text-danger" })
 					</div>
 					<div class="form-group">
 						@Html.LabelFor(m => m.Building.LeftWaterMetersAmount)
 						@Html.EditorFor(m => m.Building.LeftWaterMetersAmount, new { htmlAttributes = new { @class = "form-control" } })
+						@Html.ValidationMessageFor(m => m.Building.LeftWaterMetersAmount, null, new { @class = "text-danger" })
+					</div>
+					<div class="form-group">
+						@Html.LabelFor(m => m.Building.MountedCheckValvesAmount)
+						@Html.EditorFor(m => m.Building.MountedCheckValvesAmount, new { htmlAttributes = new { @class = "form-control" } })
+						@Html.ValidationMessageFor(m => m.Building.MountedCheckValvesAmount, null, new { @class = "text-danger" })
+					</div>
+					<div class="form-group">
+						@Html.LabelFor(m => m.Building.SealedWaterMetersAmount)
+						@Html.EditorFor(m => m.Building.SealedWaterMetersAmount, new { htmlAttributes = new { @class = "form-control" } })
+						@Html.ValidationMessageFor(m => m.Building.SealedWaterMetersAmount, null, new { @class = "text-danger" })
 					</div>
 					<div class="form-group">
 						@Html.LabelFor(m => m.Building.WaterMetersRemarks)
-						@Html.TextAreaFor(m => m.Building.WaterMetersRemarks, new { @class = "form-control" })
+						@Html.TextAreaFor(m => m.Building.WaterMetersRemarks, new { htmlAttributes = new { @class = "form-control" } })
+						@Html.ValidationMessageFor(m => m.Building.WaterMetersRemarks, null, new { @class = "text-danger" })
 					</div>
+
 
 					<table id="dataTable3" class="NonResponsiveColumn-5">
 						<thead>
@@ -214,18 +244,27 @@
 					<div class="form-group">
 						@Html.LabelFor(m => m.Building.MountedHeatMetersAmount)
 						@Html.EditorFor(m => m.Building.MountedHeatMetersAmount, new { htmlAttributes = new { @class = "form-control" } })
+						@Html.ValidationMessageFor(m => m.Building.MountedHeatMetersAmount, null, new { @class = "text-danger" })
 					</div>
 					<div class="form-group">
 						@Html.LabelFor(m => m.Building.DisposedHeatMetersAmount)
 						@Html.EditorFor(m => m.Building.DisposedHeatMetersAmount, new { htmlAttributes = new { @class = "form-control" } })
+						@Html.ValidationMessageFor(m => m.Building.DisposedHeatMetersAmount, null, new { @class = "text-danger" })
 					</div>
 					<div class="form-group">
 						@Html.LabelFor(m => m.Building.LeftHeatMetersAmount)
 						@Html.EditorFor(m => m.Building.LeftHeatMetersAmount, new { htmlAttributes = new { @class = "form-control" } })
+						@Html.ValidationMessageFor(m => m.Building.LeftHeatMetersAmount, null, new { @class = "text-danger" })
+					</div>
+					<div class="form-group">
+						@Html.LabelFor(m => m.Building.ReplacedJointsAmount)
+						@Html.EditorFor(m => m.Building.ReplacedJointsAmount, new { htmlAttributes = new { @class = "form-control" } })
+						@Html.ValidationMessageFor(m => m.Building.ReplacedJointsAmount, null, new { @class = "text-danger" })
 					</div>
 					<div class="form-group">
 						@Html.LabelFor(m => m.Building.HeatMetersRemarks)
-						@Html.TextAreaFor(m => m.Building.HeatMetersRemarks, new { @class = "form-control"  })
+						@Html.TextAreaFor(m => m.Building.HeatMetersRemarks, new { htmlAttributes = new { @class = "form-control" } })
+						@Html.ValidationMessageFor(m => m.Building.HeatMetersRemarks, null, new { @class = "text-danger" })
 					</div>
 
 					<table id="dataTable4" class="NonResponsiveColumn-5">
@@ -304,18 +343,22 @@
 					<div class="form-group">
 						@Html.LabelFor(m => m.Building.MountedCostMetersAmount)
 						@Html.EditorFor(m => m.Building.MountedCostMetersAmount, new { htmlAttributes = new { @class = "form-control" } })
+						@Html.ValidationMessageFor(m => m.Building.MountedCostMetersAmount, null, new { @class = "text-danger" })
 					</div>
 					<div class="form-group">
 						@Html.LabelFor(m => m.Building.DisposedCostMetersAmount)
 						@Html.EditorFor(m => m.Building.DisposedCostMetersAmount, new { htmlAttributes = new { @class = "form-control" } })
+						@Html.ValidationMessageFor(m => m.Building.DisposedCostMetersAmount, null, new { @class = "text-danger" })
 					</div>
 					<div class="form-group">
 						@Html.LabelFor(m => m.Building.LeftCostMetersAmount)
 						@Html.EditorFor(m => m.Building.LeftCostMetersAmount, new { htmlAttributes = new { @class = "form-control" } })
+						@Html.ValidationMessageFor(m => m.Building.LeftCostMetersAmount, null, new { @class = "text-danger" })
 					</div>
 					<div class="form-group">
 						@Html.LabelFor(m => m.Building.CostMetersRemarks)
-						@Html.TextAreaFor(m => m.Building.CostMetersRemarks, new { @class = "form-control" } )
+						@Html.TextAreaFor(m => m.Building.CostMetersRemarks, new { @class = "form-control" })
+						@Html.ValidationMessageFor(m => m.Building.CostMetersRemarks, null, new { @class = "text-danger" })
 					</div>
 
 					<table id="dataTable5" class="NonResponsiveColumn-5">

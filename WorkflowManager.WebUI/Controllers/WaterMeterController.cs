@@ -168,7 +168,7 @@ namespace WorkflowManager.WebUI.Controllers
 			var waterMeter = mapper.Map<WaterMeterViewModel, WaterMeter>(model.WaterMeter);
 
 			if (waterMeter.MountedWaterMeterNum != null && waterMeter.MountedWaterMeterNum != "" && waterMeter.DemountedWaterMeterNum != null && waterMeter.DemountedWaterMeterNum != "")
-				if (_repository.WaterMeterRepository.SearchFor(wm => wm.BuildingId == waterMeter.BuildingId && waterMeter.MountedWaterMeterNum == wm.MountedWaterMeterNum && wm.DemountedWaterMeterNum == waterMeter.DemountedWaterMeterNum).Count() > 0)
+				if (_repository.WaterMeterRepository.SearchFor(wm => wm.Id != model.WaterMeter.Id && wm.BuildingId == waterMeter.BuildingId && waterMeter.MountedWaterMeterNum == wm.MountedWaterMeterNum && wm.DemountedWaterMeterNum == waterMeter.DemountedWaterMeterNum).Count() > 0)
 				{
 					ModelState.AddModelError("WaterMeter.DemountedWaterMeterNum", "Istnieje już miernik o takim numerze");
 					ModelState.AddModelError("WaterMeter.MountedWaterMeterNum", "Istnieje już miernik o takim numerze");

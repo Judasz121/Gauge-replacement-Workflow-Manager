@@ -14,7 +14,6 @@ $(document).ready(function () {
 
 
 $("input#residentSign").change(function () {
-    // readURL(this);
     if (this.files && this.files[0]) {
         var reader = new FileReader();
 

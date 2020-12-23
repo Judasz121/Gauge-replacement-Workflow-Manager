@@ -93,10 +93,12 @@ namespace WorkflowManager.WebUI.Controllers
 				.Include(b => b.CostMeters)
 				.FirstOrDefault()
 			;
+            
 			if (building == null)
 				return NotFound();
 
 			var model = mapper.Map<Building, BuildingViewModel>(building);
+            model.ResidentSign = ImgBytesToBase64(building.ResidentSign);
 			return View(model);
 		}
 
@@ -203,9 +205,11 @@ namespace WorkflowManager.WebUI.Controllers
 			;
 			if (building == null)
 				return NotFound();
+
 			building.Jobs = building.Jobs.Where(j => !j.Done).ToList();
 			model.Building = mapper.Map<Building, BuildingViewModel>(building);
-			IEnumerable<User> users = _repository.UserRepository.SearchFor(u => u.UserRoles.Any(ur => ur.Role.Name == "Technician" || ur.Role.Name == "Manager"));
+            model.Building.ResidentSign = ImgBytesToBase64(building.ResidentSign);
+            IEnumerable<User> users = _repository.UserRepository.SearchFor(u => u.UserRoles.Any(ur => ur.Role.Name == "Technician" || ur.Role.Name == "Manager"));
 			model.Users = new MultiSelectList(users, "Id", "FullName", building.UserBuildings.Select(ub => ub.User.Id));
 			return View(model);
 		}
@@ -226,9 +230,16 @@ namespace WorkflowManager.WebUI.Controllers
 			if (ModelState.IsValid)
 			{
 				Building building = mapper.Map<BuildingViewModel, Building>(model.Building);
-				if(!building.ResidentSign.IsNullOrEmpty())
-					building.ResidentSign = await ImgToBytes(model.ResidentSign);
-				_repository.BuildingRepository.Update(building);
+                if (model.ResidentSign != null && model.ResidentSign.Length > 0)
+                {
+                    building.ResidentSign = ImgToBytes(model.ResidentSign);
+                    _repository.BuildingRepository.Update(building);
+                }
+				else
+				{
+                    _repository.BuildingRepository.Update(building);
+                    _repository._context.Entry(building).Property(b => b.ResidentSign).IsModified = false;
+                }
 				_repository.SaveChanges();
 
                 #region userbuildings
@@ -272,14 +283,19 @@ namespace WorkflowManager.WebUI.Controllers
 				return View(model);
 			}
 		}
-		public async Task<byte[]> ImgToBytes(IFormFile img)
+		public byte[] ImgToBytes(IFormFile img)
 		{
 			using (var ms = new MemoryStream())
 			{
-				await img.CopyToAsync(ms);
+				img.CopyTo(ms);
 				return ms.ToArray();
 			}
 		}
+        public string ImgBytesToBase64(byte[] bytes)
+		{
+            string base64Img = Convert.ToBase64String(bytes);
+            return String.Format("data:image/gif;base64,{0}", base64Img);
+        }
 
 
         #region PDFdownloads
@@ -289,7 +305,14 @@ namespace WorkflowManager.WebUI.Controllers
         public IActionResult DownloadWaterMetersPDF(int id)
         {
             IMapper mapper = AutoMapperConfigs.BuildingDownload().CreateMapper();
-            var building = _repository.BuildingRepository.GetById(id);
+            var building = _repository.BuildingRepository.SearchFor(b => b.Id == id)
+               .Include(b => b.WaterMeters) 
+                .Include(b => b.UserBuildings)
+                    .ThenInclude(ub => ub.User)
+                        .ThenInclude(u => u.UserRoles)
+                            .ThenInclude(ur => ur.Role)
+                .First()
+            ;
             if (building == null)
                 return NotFound();
             BuildingViewModel model = mapper.Map<Building, BuildingViewModel>(building);
@@ -460,6 +483,7 @@ namespace WorkflowManager.WebUI.Controllers
             document.Add(table);
 
             #endregion
+
             LayoutResult result = table.CreateRendererSubTree().SetParent(document.GetRenderer()).Layout(new LayoutContext(new LayoutArea(1, new iText.Kernel.Geom.Rectangle(0, 0, 400, 10000.0F))));
             float prevTableHeight = result.GetOccupiedArea().GetBBox().GetHeight();
 
@@ -524,7 +548,7 @@ namespace WorkflowManager.WebUI.Controllers
                 .SetFont(CalibriRegular)
                 .SetFontSize(13)
                 .SetTextAlignment(TextAlignment.CENTER)
-                .SetHeight(20)
+                .SetHeight(17)
             ;
             table = new Table(3)
                 .SetHorizontalAlignment(HorizontalAlignment.CENTER)
@@ -551,14 +575,15 @@ namespace WorkflowManager.WebUI.Controllers
             table.AddCell(infoCell.Clone(false).Add(new Paragraph(new Text("Technik:")).SetFixedLeading(infopgphlead)));
             table.AddCell(infoCell.Clone(false).Add(new Paragraph(new Text("Data:")).SetFixedLeading(infopgphlead)));
             table.AddCell(infoCell.Clone(false).Add(new Paragraph(new Text("Podpis lokatora:")).SetFixedLeading(infopgphlead)));
-
             Cell techniciansCell = dataCell.Clone(false);
-            foreach(var item in model.Users.Where(u => u.Roles.Any(r => r == "Technician")))
-			{
+            List<UserViewModel> technicians = model.Users.Where(u => u.Roles.Any(r => r == "Technician")).AsEnumerable().ToList();
+            techniciansCell.SetHeight(17 * technicians.Count());
+            foreach (var item in technicians)
+            {
                 techniciansCell.Add(new Paragraph(new Text(item.FullName)).SetFixedLeading(pgphlead));
-			}
+            }
+       
             table.AddCell(techniciansCell);
-
             table.AddCell(dataCell.Clone(false).Add(new Paragraph(new Text(model.DateWorkEnd.ToString())).SetFixedLeading(pgphlead)));
 
             if (IsResidentSignNull)
@@ -579,7 +604,14 @@ namespace WorkflowManager.WebUI.Controllers
         public ActionResult DownloadHeatMetersPDF(int id)
         {
             IMapper mapper = AutoMapperConfigs.BuildingDownload().CreateMapper();
-            var building = _repository.BuildingRepository.GetById(id);
+            var building = _repository.BuildingRepository.SearchFor(b => b.Id == id)
+                .Include(b => b.HeatMeters)
+                .Include(b => b.UserBuildings)
+                    .ThenInclude(ub => ub.User)
+                        .ThenInclude(u => u.UserRoles)
+                            .ThenInclude(ur => ur.Role)
+                .First()
+            ;
             if (building == null)
                 return NotFound();
             BuildingViewModel model = mapper.Map<Building, BuildingViewModel>(building);
@@ -593,7 +625,6 @@ namespace WorkflowManager.WebUI.Controllers
             PdfFont CalibriBold = null;
             try
             {
-
                 FontProgram fp = FontProgramFactory.CreateFont(Path.Combine(_webHostEnvironment.ContentRootPath, "wwwroot", "fonts", "Calibri Regular.ttf"));
                 CalibriRegular = PdfFontFactory.CreateFont(fp, PdfEncodings.CP1250, true);
                 fp = FontProgramFactory.CreateFont(Path.Combine(_webHostEnvironment.ContentRootPath, "wwwroot", "fonts", "Calibri Bold.ttf"));
@@ -744,7 +775,7 @@ namespace WorkflowManager.WebUI.Controllers
             table.AddCell(infoCell.Clone(false).Add(new Paragraph(new Text("Wymiana/montaż zaworu, szt./DN")).SetFixedLeading(pgphlead)));
             table.AddCell(dataCell.Clone(false).Add(new Paragraph(new Text(model.MountedOrReplacedValvesAmount.ToString())).SetFixedLeading(pgphlead)));
             table.AddCell(infoCell.Clone(false).Add(new Paragraph(new Text("Wymiana trójnika, szt.")).SetFixedLeading(pgphlead)));
-            table.AddCell(dataCell.Clone(false).Add(new Paragraph(new Text(model.ReplacedTeesAmount.ToString())).SetFixedLeading(pgphlead)));
+            table.AddCell(dataCell.Clone(false).Add(new Paragraph(new Text(model.ReplacedJointsAmount.ToString())).SetFixedLeading(pgphlead)));
             table.AddCell(infoCell.Clone(false).Add(new Paragraph(new Text("Plombowanie wodomierzy, szt.")).SetFixedLeading(pgphlead)));
             table.AddCell(dataCell.Clone(false).Add(new Paragraph(new Text(model.SealedWaterMetersAmount.ToString())).SetFixedLeading(pgphlead)));
 
@@ -815,12 +846,11 @@ namespace WorkflowManager.WebUI.Controllers
                 .SetFont(CalibriRegular)
                 .SetFontSize(13)
                 .SetTextAlignment(TextAlignment.CENTER)
-                .SetHeight(20)
+                .SetHeight(17)
             ;
             table = new Table(3)
                 .SetHorizontalAlignment(HorizontalAlignment.CENTER)
                 .SetRelativePosition(0, 0, 0, 49)
-            // .SetWidth(UnitValue.CreatePercentValue(50))
             ;
             bool IsResidentSignNull;
             Image ResidentSign = null;
@@ -844,7 +874,9 @@ namespace WorkflowManager.WebUI.Controllers
             table.AddCell(infoCell.Clone(false).Add(new Paragraph(new Text("Data:")).SetFixedLeading(infopgphlead)));
             table.AddCell(infoCell.Clone(false).Add(new Paragraph(new Text("Podpis lokatora:")).SetFixedLeading(infopgphlead)));
             Cell techniciansCell = dataCell.Clone(false);
-            foreach (var item in model.Users.Where(u => u.Roles.Any(r => r == "Technician")))
+            List<UserViewModel> technicians = model.Users.Where(u => u.Roles.Any(r => r == "Technician")).AsEnumerable().ToList();
+            techniciansCell.SetHeight(17 * technicians.Count());
+            foreach (var item in technicians)
             {
                 techniciansCell.Add(new Paragraph(new Text(item.FullName)).SetFixedLeading(pgphlead));
             }
@@ -868,7 +900,14 @@ namespace WorkflowManager.WebUI.Controllers
         public ActionResult DownloadCostMetersPDF(int id)
         {
             IMapper mapper = AutoMapperConfigs.BuildingDownload().CreateMapper();
-            var building = _repository.BuildingRepository.GetById(id);
+            var building = _repository.BuildingRepository.SearchFor(b => b.Id == id)
+               .Include(b => b.CostMeters)
+                .Include(b => b.UserBuildings)
+                    .ThenInclude(ub => ub.User)
+                        .ThenInclude(u => u.UserRoles)
+                            .ThenInclude(ur => ur.Role)
+                .First()
+            ;
             if (building == null)
                 return new StatusCodeResult(404);
             BuildingViewModel model = mapper.Map<Building, BuildingViewModel>(building);
@@ -882,9 +921,9 @@ namespace WorkflowManager.WebUI.Controllers
             PdfFont CalibriBold = null;
             try
             {
-                FontProgram fp = FontProgramFactory.CreateFont(Path.Combine(_webHostEnvironment.ContentRootPath, "fonts", "Calibri Regular.ttf"));
+                FontProgram fp = FontProgramFactory.CreateFont(Path.Combine(_webHostEnvironment.ContentRootPath, "wwwroot", "fonts", "Calibri Regular.ttf"));
                 CalibriRegular = PdfFontFactory.CreateFont(fp, PdfEncodings.CP1250, true);
-                fp = FontProgramFactory.CreateFont(Path.Combine(_webHostEnvironment.ContentRootPath, "fonts", "Calibri Bold.ttf"));
+                fp = FontProgramFactory.CreateFont(Path.Combine(_webHostEnvironment.ContentRootPath, "wwwroot", "fonts", "Calibri Bold.ttf"));
                 CalibriBold = PdfFontFactory.CreateFont(fp, PdfEncodings.CP1250, true);
             }
             catch(NullReferenceException exc) { }
@@ -953,7 +992,7 @@ namespace WorkflowManager.WebUI.Controllers
             if(model.AdditionalAddress != null)
                 table.AddCell(dataCell.Clone(false).Add(new Paragraph(new Text(model.AdditionalAddress)).SetFixedLeading(pgphlead)));
             else
-                table.AddCell(dataCell.Clone(false).Add(new Paragraph(new Text(model.AdditionalAddress)).SetFixedLeading(pgphlead)));
+                table.AddCell(dataCell.Clone(false).Add(new Paragraph(new Text("")).SetFixedLeading(pgphlead)));
 
             document.Add(table);
             #endregion
@@ -1075,7 +1114,7 @@ namespace WorkflowManager.WebUI.Controllers
                 .SetFont(CalibriRegular)
                 .SetFontSize(13)
                 .SetTextAlignment(TextAlignment.CENTER)
-                .SetHeight(20)
+                .SetHeight(17)
             ;
             table = new Table(3)
                 .SetHorizontalAlignment(HorizontalAlignment.CENTER)
@@ -1103,7 +1142,9 @@ namespace WorkflowManager.WebUI.Controllers
             table.AddCell(infoCell.Clone(false).Add(new Paragraph(new Text("Data:")).SetFixedLeading(infopgphlead)));
             table.AddCell(infoCell.Clone(false).Add(new Paragraph(new Text("Podpis lokatora:")).SetFixedLeading(infopgphlead)));
             Cell techniciansCell = dataCell.Clone(false);
-            foreach (var item in model.Users.Where(u => u.Roles.Any(r => r == "Technician")))
+            List<UserViewModel> technicians = model.Users.Where(u => u.Roles.Any(r => r == "Technician")).AsEnumerable().ToList();
+            techniciansCell.SetHeight(17 * technicians.Count());
+            foreach (var item in technicians)
             {
                 techniciansCell.Add(new Paragraph(new Text(item.FullName)).SetFixedLeading(pgphlead));
             }

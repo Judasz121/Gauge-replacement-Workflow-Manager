@@ -12,7 +12,7 @@ namespace WorkflowManager.EFCoreLibrary.DataAccess
     {
         protected DbSet<T> DbSet;
 
-        protected DbContext _context;
+        public DbContext _context;
 
         internal EFRepository(DbContext context)
         {

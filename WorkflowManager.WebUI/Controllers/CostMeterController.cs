@@ -168,7 +168,7 @@ namespace WorkflowManager.WebUI.Controllers
 			var CostMeter = mapper.Map<CostMeterViewModel, CostMeter>(model.CostMeter);
 
 			if (CostMeter.MountedPKONum != null && CostMeter.MountedPKONum != "" && CostMeter.DemountedPKONum != null && CostMeter.DemountedPKONum != "")
-				if (_repository.CostMeterRepository.SearchFor(wm => wm.BuildingId == CostMeter.BuildingId && CostMeter.MountedPKONum == wm.MountedPKONum && wm.DemountedPKONum == CostMeter.DemountedPKONum).Count() > 0)
+				if (_repository.CostMeterRepository.SearchFor(cm => cm.Id != CostMeter.Id && cm.BuildingId == CostMeter.BuildingId && CostMeter.MountedPKONum == cm.MountedPKONum && cm.DemountedPKONum == CostMeter.DemountedPKONum).Count() > 0)
 				{
 					ModelState.AddModelError("CostMeter.DeMountedPKONum", "Istnieje już miernik o takim numerze");
 					ModelState.AddModelError("CostMeter.MountedPKONum", "Istnieje już miernik o takim numerze");

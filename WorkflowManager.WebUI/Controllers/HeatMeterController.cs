@@ -169,7 +169,7 @@ namespace WorkflowManager.WebUI.Controllers
 			var HeatMeter = mapper.Map<HeatMeterViewModel, HeatMeter>(model.HeatMeter);
 
 			if (HeatMeter.MountedHeatMeterNum != null && HeatMeter.MountedHeatMeterNum != "" && HeatMeter.DemountedHeatMeterNum != null && HeatMeter.DemountedHeatMeterNum != "")
-				if (_repository.HeatMeterRepository.SearchFor(wm => wm.BuildingId == HeatMeter.BuildingId && HeatMeter.MountedHeatMeterNum == wm.MountedHeatMeterNum && wm.DemountedHeatMeterNum == HeatMeter.DemountedHeatMeterNum).Count() > 0)
+				if (_repository.HeatMeterRepository.SearchFor(hm => hm.Id != HeatMeter.Id && hm.BuildingId == HeatMeter.BuildingId && HeatMeter.MountedHeatMeterNum == hm.MountedHeatMeterNum && hm.DemountedHeatMeterNum == HeatMeter.DemountedHeatMeterNum).Count() > 0)
 				{
 					ModelState.AddModelError("HeatMeter.DemountedHeatMeterNum", "Istnieje już miernik o takim numerze");
 					ModelState.AddModelError("HeatMeter.MountedHeatMeterNum", "Istnieje już miernik o takim numerze");

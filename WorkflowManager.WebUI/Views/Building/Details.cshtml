@@ -52,9 +52,20 @@
 </div>
 <div class="form-group">
 	@Html.LabelFor(m => m.ResidentSign)
-	<img src="/Building/GetResidentSignImage?id=@Model.Id" class="content-image form-control" />
+	<img src="@Model.ResidentSign" class="content-image form-control" />
 </div>
-
+<div class="form-group">
+	@Html.LabelFor(m => m.MountedOrReplacedFittingsAmount)
+	@Html.EditorFor(m => m.MountedOrReplacedFittingsAmount, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+</div>
+<div class="form-group">
+	@Html.LabelFor(m => m.MountedOrReplacedReductionsAmount)
+	@Html.EditorFor(m => m.MountedOrReplacedReductionsAmount, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+</div>
+<div class="form-group">
+	@Html.LabelFor(m => m.MountedOrReplacedValvesAmount)
+	@Html.EditorFor(m => m.MountedOrReplacedValvesAmount, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+</div>
 <div class="accordion">
 	@*Water Meters*@
 	<div class="card collapse-card">
@@ -77,16 +88,26 @@
 				</div>
 				<div class="form-group">
 					@Html.LabelFor(m => m.DisposedWaterMetersAmount)
-					@Html.EditorFor(m => m.MountedWaterMetersAmount, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+					@Html.EditorFor(m => m.DisposedWaterMetersAmount, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
 				</div>
 				<div class="form-group">
 					@Html.LabelFor(m => m.LeftWaterMetersAmount)
 					@Html.EditorFor(m => m.LeftWaterMetersAmount, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
 				</div>
 				<div class="form-group">
-					@Html.LabelFor(m => m.WaterMetersRemarks)
-					@Html.TextAreaFor(m => m.WaterMetersRemarks,  new { @class = "form-control", @readonly = true  })
+					@Html.LabelFor(m => m.MountedCheckValvesAmount)
+					@Html.EditorFor(m => m.MountedCheckValvesAmount, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
 				</div>
+				<div class="form-group">
+					@Html.LabelFor(m => m.SealedWaterMetersAmount)
+					@Html.EditorFor(m => m.SealedWaterMetersAmount, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+				</div>
+				<div class="form-group">
+					@Html.LabelFor(m => m.WaterMetersRemarks)
+					@Html.TextAreaFor(m => m.WaterMetersRemarks, new { @class = "form-control", @readonly = true } )
+				</div>
+
+
 
 				<table id="dataTable1" class="NonResponsiveColumn-5">
 					<thead>
@@ -165,8 +186,12 @@
 					@Html.EditorFor(m => m.LeftHeatMetersAmount, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
 				</div>
 				<div class="form-group">
+					@Html.LabelFor(m => m.ReplacedJointsAmount)
+					@Html.EditorFor(m => m.ReplacedJointsAmount, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+				</div>
+				<div class="form-group">
 					@Html.LabelFor(m => m.HeatMetersRemarks)
-					@Html.TextAreaFor(m => m.HeatMetersRemarks, new { @class = "form-control", @readonly = true  })
+					@Html.TextAreaFor(m => m.HeatMetersRemarks, new { @class = "form-control", @readonly = true })
 				</div>
 
 				<table id="dataTable2" class="NonResponsiveColumn-5">

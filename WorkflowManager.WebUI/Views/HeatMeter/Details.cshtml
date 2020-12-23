@@ -11,7 +11,7 @@
 
 <div class="form-group">
 	@Html.LabelFor(m => m.Building.FullAddress)
-	@Html.ActionLink(Model.Building.FullAddress, "Details", "Building", Model.BuildingId, new { @class = "form-control" })
+	@Html.ActionLink(Model.Building.FullAddress, "Details", "Building", new { id = Model.BuildingId }, new { @class = "form-control" })
 </div>
 <div class="form-group">
 	@Html.LabelFor(m => m.Measurement)

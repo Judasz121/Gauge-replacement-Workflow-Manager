@@ -61,7 +61,7 @@ namespace WorkflowManager.WebUI.Models
         public ICollection<JobViewModel> Jobs { get; set; }
 
         [Display(Name = "Podpis lokatora")]
-        public byte[] ResidentSign { get; set; }
+        public string ResidentSign { get; set; } // base64
 
         [Display(Name = "Ukończono prace")]
 		public bool Done { get; set; }
@@ -121,7 +121,7 @@ namespace WorkflowManager.WebUI.Models
         }
 
 
-        [Display(Name = "Wymiana/montaż  śrubunków, szt.")]
+        [Display(Name = "Wymiana/montaż śrubunków, szt.")]
         public int? MountedOrReplacedFittingsAmount { get; set; }
 
         [Display(Name = "Wymiana/montaż redukcji, szt./DN")]
@@ -133,8 +133,8 @@ namespace WorkflowManager.WebUI.Models
         [Display(Name = "Montaż zaworków zwrotnych, szt. ")]
         public int? MountedCheckValvesAmount { get; set; }
 
-        [Display(Name = "Wymiana trójnika szt.")]
-        public int? ReplacedTeesAmount { get; set; }
+        [Display(Name = "Wymiana trójników szt.")]
+        public int? ReplacedJointsAmount { get; set; }
 
         [Display(Name = "Plombowanie wodomierzy, szt.")]
         public int? SealedWaterMetersAmount { get; set; }
