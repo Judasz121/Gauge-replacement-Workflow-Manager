@@ -13,7 +13,7 @@ namespace WorkflowManager.EFCoreLibrary.DataAccess
 		public WorkflowManagerRepository()
 		{
 			var optionsBuilder = new DbContextOptionsBuilder<WorkflowManagerDbContext>();
-			optionsBuilder.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB; Initial Catalog=WorkflowManagerEFCoreDB; Integrated Security=True;");
+			optionsBuilder.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB; Initial Catalog=GaugeReplacementWorkflowManagerEFCoreDB; Integrated Security=True;");
 			_context = new WorkflowManagerDbContext(optionsBuilder.Options);
 			
 			BuildingRepository = new EFRepository<Building>(_context);

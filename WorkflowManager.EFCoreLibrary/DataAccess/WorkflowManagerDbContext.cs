@@ -24,7 +24,7 @@ namespace WorkflowManager.EFCoreLibrary.DataAccess
 		{
 			if (!optionsBuilder.IsConfigured)
 			{
-				optionsBuilder.UseSqlServer("Data Source = (localdb)\\MSSQLLocalDB; Initial Catalog = WorkflowManagerEFCoreDB; Integrated Security = True; MultipleActiveResultSets = true; ");
+				optionsBuilder.UseSqlServer("Data Source = (localdb)\\MSSQLLocalDB; Initial Catalog = GaugeReplacementWorkflowManagerEFCoreDB; Integrated Security = True; MultipleActiveResultSets = true; ");
 			}
 		}
 
@@ -63,11 +63,6 @@ namespace WorkflowManager.EFCoreLibrary.DataAccess
 					.HasForeignKey(ur => ur.UserId)
 					.IsRequired()
 				;
-                //User.Property(u => u.Id)
-                //    .ValueGeneratedOnAdd()
-                //    .HasColumnName("Id")
-                //    .IsRequired()
-                //;
             });
 			modelBuilder.Entity<Role>()
 				.HasMany(r => r.UserRoles)
@@ -75,21 +70,6 @@ namespace WorkflowManager.EFCoreLibrary.DataAccess
 					.HasForeignKey(ur => ur.RoleId)
 					.IsRequired()
 			;
-			//modelBuilder.Entity<UserRole>(UserRole =>
-			//{
-			//	UserRole.HasKey(ur => new { ur.UserId, ur.RoleId });
-
-			//	UserRole.HasOne(ur => ur.Role)
-			//		.WithMany(r => r.UserRoles)
-			//		.HasForeignKey(ur => ur.RoleId)
-			//		.IsRequired()
-			//	;
-			//	UserRole.HasOne(ur => ur.User)
-			//		.WithMany(u => u.UserRoles)
-			//		.HasForeignKey(ur => ur.UserId)
-			//		.IsRequired()
-			//	;
-			//});
 			#region users and roles data seed
 			modelBuilder.Entity<Role>().HasData(
 				new Role()
