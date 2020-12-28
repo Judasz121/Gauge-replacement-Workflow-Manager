@@ -132,8 +132,14 @@ namespace WorkflowManager.WebUI.Controllers
 				ModelState.AddModelError("Job.Name", "Istnieje już zadanie o takiej nazwie");
 			if (ModelState.IsValid)
 			{
-				if (_repository.JobRepository.SearchFor(j => j.IdBuilding == model.SelectedBuildingId).Any())
-					model.Job.Order = _repository.JobRepository.SearchFor(j => j.IdBuilding == model.SelectedBuildingId).Aggregate((j1, j2) => j1.Order > j2.Order ? j1 : j2).Order + 1;
+				if (_repository.JobRepository.SearchFor(j => j.IdBuilding == model.SelectedBuildingId && !j.Deleted).Any())
+				{
+					var jobList = _repository.JobRepository.SearchFor(j => j.IdBuilding == model.SelectedBuildingId && !j.Deleted).ToList();
+					if (jobList.Count() > 1)
+						model.Job.Order = jobList.Aggregate((j1, j2) => j1.Order > j2.Order ? j1 : j2).Order + 1;
+					else
+						model.Job.Order = jobList.FirstOrDefault().Order + 1;
+				}
 				else
 					model.Job.Order = 1;
 
@@ -158,8 +164,8 @@ namespace WorkflowManager.WebUI.Controllers
 					};
 					_repository.UserJobRepository.Insert(UJ);
 				}
-
 				_repository.SaveChanges();
+				ScheduleCalculations.CalcBuilidngWorkSchedule(job.IdBuilding).Wait();
 				return RedirectToAction("Index", "Job");
 			}
 			else
@@ -220,11 +226,10 @@ namespace WorkflowManager.WebUI.Controllers
 				job.IdBuilding = model.SelectedBuildingId;
 				_repository.JobRepository.Update(job);
 
+				#region userJobs
 				IEnumerable<UserJob> userJobs = _repository.UserJobRepository.SearchFor(uj => uj.JobId == model.Job.Id).ToList();
 				IEnumerable<string> userIds = userJobs.Select(uj => uj.UserId);
 				bool usersChanged = model.SelectedUserIds != null && !new HashSet<string>(model.SelectedUserIds).SetEquals(userIds);
-
-				#region userJobs
 
 				if (model.SelectedUserIds != null)
 				{

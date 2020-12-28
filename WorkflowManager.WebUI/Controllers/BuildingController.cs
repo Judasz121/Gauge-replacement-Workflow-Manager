@@ -297,6 +297,21 @@ namespace WorkflowManager.WebUI.Controllers
             return String.Format("data:image/gif;base64,{0}", base64Img);
         }
 
+        public IActionResult Delete(int? id)
+		{
+            if (id == null)
+                return NotFound();
+            var building = _repository.BuildingRepository.GetById(id);
+            if (building != null)
+            {
+                _repository.BuildingRepository.Delete(building);
+                _repository.SaveChanges();
+                return RedirectToAction("Index", "Building");
+            }
+            else
+                return NotFound();
+		}
+
 
         #region PDFdownloads
 

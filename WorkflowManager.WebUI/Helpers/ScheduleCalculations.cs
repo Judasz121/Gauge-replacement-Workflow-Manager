@@ -209,7 +209,7 @@ namespace WorkflowManager.WebUI.Helpers
 			int minutesToAdd = (int)workAmount.TotalMinutes;
 			int workMinutes = (workEndHour * 60 + workEndMinute) - (workStartHour * 60 + workStartMinute);
 
-			if (date.Hour * 60 + date.Minute < workEndHour * 60 + workEndMinute)
+			if (date.Hour * 60 + date.Minute < workEndHour * 60 + workEndMinute && date.Hour * 60 + date.Minute > workStartHour * 60 + workStartMinute)
 			{
 				int firstDayMinutesLeft = (workEndHour * 60 + workEndMinute) - (date.Hour * 60 + date.Minute);
 				if (minutesToAdd > firstDayMinutesLeft)
@@ -222,8 +222,14 @@ namespace WorkflowManager.WebUI.Helpers
 					return date.AddMinutes(minutesToAdd);
 				}
 			}
-			else if (date.Hour * 60 + date.Minute < workStartHour * 60 + workStartMinute)
+			else if (date.Hour * 60 + date.Minute < workStartHour * 60 + workStartMinute )
 				date = DateTime.Parse(date.ToString("yyyy-MM-dd") + " " + workStartHour.ToString() + ":" + workStartMinute.ToString());
+			else if(date.Hour * 60 + date.Minute > workEndHour * 60 + workEndMinute)
+			{
+				date = NextWorkDay(date);
+				date = DateTime.Parse(date.ToString("yyyy-MM-dd") + " " + workStartHour.ToString() + ":" + workStartMinute.ToString());
+			}
+
 
 			while(minutesToAdd > workMinutes)
 			{
