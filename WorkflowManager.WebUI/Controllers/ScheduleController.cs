@@ -40,7 +40,7 @@ namespace WorkflowManager.WebUI.Controllers
 			IEnumerable<Job> userJobs;
 			if (id != null)
 			{
-				userJobs = _repository.JobRepository.SearchFor(j => j.UserJobs.Any(uj => uj.UserId == id) && !j.Done)
+				userJobs = _repository.JobRepository.SearchFor(j => j.UserJobs.Any(uj => uj.UserId == id) && !j.Done && !j.Deleted)
 					.Include(j => j.Building)
 				;
 				model.UserJobs = mapper.Map<IEnumerable<Job>, IEnumerable<JobViewModel>>(userJobs).ToList();
@@ -80,7 +80,7 @@ namespace WorkflowManager.WebUI.Controllers
 			var model = new ScheduleUserEditViewModel();
 
 			
-			IEnumerable<Job> jobs = _repository.JobRepository.SearchFor(j => !j.Done && !j.UserJobs.Any(uj => uj.UserId == id))
+			IEnumerable<Job> jobs = _repository.JobRepository.SearchFor(j => !j.Done && !j.Deleted && !j.UserJobs.Any(uj => uj.UserId == id))
 				.Include(j => j.UserJobs)
 					.ThenInclude(uj => uj.User)
 				.Include(j => j.Building)
@@ -155,7 +155,7 @@ namespace WorkflowManager.WebUI.Controllers
 							.ThenInclude(j => j.Building)
 					.First()
 				;
-				IEnumerable<Job> jobs = _repository.JobRepository.SearchFor(j => !j.Done /*&& !j.UserJobs.Any(uj => uj.UserId == id)*/)
+				IEnumerable<Job> jobs = _repository.JobRepository.SearchFor(j => !j.Done && !j.Deleted && !j.UserJobs.Any(uj => uj.UserId == model.UserId))
 				.Include(j => j.UserJobs)
 					.ThenInclude(uj => uj.User)
 				.Include(j => j.Building)
@@ -188,7 +188,7 @@ namespace WorkflowManager.WebUI.Controllers
 					.First().Jobs
 				;
 
-				model.BuildingJobs = mapper.Map<IEnumerable<Job>, IEnumerable<JobViewModel>>(buildingJobs);
+				model.BuildingJobs = mapper.Map<IEnumerable<Job>, IEnumerable<JobViewModel>>(buildingJobs.Where(j => !j.Deleted));
 				buildings = _repository.BuildingRepository.GetAll();
 				model.BuildingSelectList = new SelectList(buildings, "Id", "FullAddress", id);
 			}
@@ -224,7 +224,7 @@ namespace WorkflowManager.WebUI.Controllers
 			if (building == null)
 				return NotFound();
 			model.Building = mapper.Map<Building, BuildingViewModel>(building);
-			model.Jobs = mapper.Map<Job[], JobViewModel[]>(ScheduleCalculations.SortJobsBySchedule(building.Jobs));
+			model.Jobs = mapper.Map<Job[], JobViewModel[]>(ScheduleCalculations.SortJobsBySchedule(building.Jobs.Where(j => !j.Deleted)));
 			model.BuildingId = building.Id;
 			return View(model);
 		}
@@ -264,7 +264,7 @@ namespace WorkflowManager.WebUI.Controllers
 					.FirstOrDefault()
 				;
 				building.Jobs = building.Jobs.Where(j => !j.Done).ToArray();
-				model.Jobs = mapper.Map<Job[], JobViewModel[]>(ScheduleCalculations.SortJobsBySchedule(building.Jobs));
+				model.Jobs = mapper.Map<Job[], JobViewModel[]>(ScheduleCalculations.SortJobsBySchedule(building.Jobs.Where(j => !j.Deleted)));
 				model.Building = mapper.Map<Building, BuildingViewModel>(building);
 				return View(model);
 			}

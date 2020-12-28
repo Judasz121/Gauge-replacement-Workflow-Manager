@@ -35,7 +35,7 @@ namespace WorkflowManager.WebUI.Controllers
 		{
 			IMapper mapper = AutoMapperConfigs.HomeIndex().CreateMapper();
 			IEnumerable<Job> allJobs = _repository.JobRepository
-				.GetAll()
+				.SearchFor(j => !j.Deleted)
 				.Include(job => job.Building)
 				.Include(job => job.UserJobs).ThenInclude(uj => uj.User)
 			;
