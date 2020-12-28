@@ -3,6 +3,7 @@
 job filter in scheduleUserEdit ?
 fix predictedWorkTimes not accepting >24h
 fix exception when opening font file in BuildingController.PDFdownloads
+fix scheduleedit not working
 
  -- Easy -- 
 add [Required(ErrorMessage = "er msg")] to signatures in view models
