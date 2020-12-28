@@ -106,7 +106,7 @@ namespace WorkflowManager.WebUI.Controllers
 		{
 			IMapper mapper = AutoMapperConfigs.JobCreate().CreateMapper();
 			IEnumerable<BuildingViewModel> buildings = mapper.Map<List<Building>, List<BuildingViewModel>>(_repository.BuildingRepository.GetAll().ToList());
-			IEnumerable<UserViewModel> users = mapper.Map<List<User>, List<UserViewModel>>(_repository.UserRepository.GetAll().ToList());
+			IEnumerable<UserViewModel> users = mapper.Map<List<User>, List<UserViewModel>>(_repository.UserRepository.SearchFor(u => u.UserRoles.Any(ur => ur.Role.Name == "Technician" || ur.Role.Name == "Manager")).ToList());
 			JobCreateViewModel model = new JobCreateViewModel()
 			{
 				Buildings = new SelectList(buildings, "Id", "FullAddress"),
@@ -171,7 +171,7 @@ namespace WorkflowManager.WebUI.Controllers
 			else
 			{
 				IEnumerable<BuildingViewModel> buildings = mapper.Map<List<Building>, List<BuildingViewModel>>(_repository.BuildingRepository.GetAll().ToList());
-				IEnumerable<UserViewModel> users = mapper.Map<List<User>, List<UserViewModel>>(_repository.UserRepository.GetAll().ToList());
+				IEnumerable<UserViewModel> users = mapper.Map<List<User>, List<UserViewModel>>(_repository.UserRepository.SearchFor(u => u.UserRoles.Any(ur => ur.Role.Name == "Technician" || ur.Role.Name == "Manager")).ToList());
 				model.Buildings = new SelectList(buildings, "Id", "FullAddress");
 				model.Users = new SelectList(users, "Id", "FullName");
 				return View(model);
@@ -198,7 +198,7 @@ namespace WorkflowManager.WebUI.Controllers
 				return NotFound();
 			}
 			IEnumerable<Building> buildings = _repository.BuildingRepository.GetAll();
-			IEnumerable<User> users = _repository.UserRepository.SearchFor(u => u.UserRoles.Any(ur => ur.Role.Name == "Technician"));
+			IEnumerable<User> users = _repository.UserRepository.SearchFor(u => u.UserRoles.Any(ur => ur.Role.Name == "Technician" || ur.Role.Name == "Manager"));
 			JobEditViewModel model = new JobEditViewModel()
 			{
 				Job = mapper.Map<Job, JobViewModel>(job),
