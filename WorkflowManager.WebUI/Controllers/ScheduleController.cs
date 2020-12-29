@@ -231,7 +231,7 @@ namespace WorkflowManager.WebUI.Controllers
 
 		[HttpPost]
 		[Authorize(Roles = "Admin, Manager")]
-		public async Task<IActionResult> BuildingEdit(ScheduleBuildingEditViewModel model)
+		public IActionResult BuildingEdit(ScheduleBuildingEditViewModel model)
 		{
 			if (model.JobsOrder == null)
 				ModelState.AddModelError("JobsOrder", "Nie dokonano zmian");

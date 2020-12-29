@@ -10,6 +10,7 @@
 		@Html.HiddenFor(m => m.Job.Id)
 		@Html.HiddenFor(m => m.Job.Order)
 		@Html.HiddenFor(m => m.Job.DateAdded)
+		@Html.HiddenFor(m => m.Job.PredictedDoneDate)
 		@Html.AntiForgeryToken()
 		<div class="form-group">
 			@Html.LabelFor(model => model.Job.Name)
