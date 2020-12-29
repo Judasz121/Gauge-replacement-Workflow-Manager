@@ -222,14 +222,21 @@ namespace WorkflowManager.WebUI.Controllers
 				ModelState.AddModelError("Name", "Istnieje już zadanie o takiej nazwie");
 			if (ModelState.IsValid)
 			{
+				TimeSpan oldPredictedDuration = _repository.JobRepository.SearchFor(j => j.Id == model.Job.Id)
+					.AsNoTracking()
+					.FirstOrDefault()
+					.PredictedDuration
+				;
 				Job job = mapper.Map<JobViewModel, Job>(model.Job);
 				job.IdBuilding = model.SelectedBuildingId;
 				_repository.JobRepository.Update(job);
 
 				#region userJobs
+
 				IEnumerable<UserJob> userJobs = _repository.UserJobRepository.SearchFor(uj => uj.JobId == model.Job.Id).ToList();
 				IEnumerable<string> userIds = userJobs.Select(uj => uj.UserId);
-				bool usersChanged = model.SelectedUserIds != null && !new HashSet<string>(model.SelectedUserIds).SetEquals(userIds);
+				bool recalcSchedule = model.SelectedUserIds != null && !new HashSet<string>(model.SelectedUserIds).SetEquals(userIds) || oldPredictedDuration != job.PredictedDuration;
+
 
 				if (model.SelectedUserIds != null)
 				{
@@ -262,7 +269,7 @@ namespace WorkflowManager.WebUI.Controllers
 				_repository.SaveChanges();
 				
 				
-				if (usersChanged)
+				if (recalcSchedule)
 					ScheduleCalculations.CalcBuilidngWorkSchedule(job.IdBuilding);
 				return RedirectToAction(nameof(Index));
 			}
