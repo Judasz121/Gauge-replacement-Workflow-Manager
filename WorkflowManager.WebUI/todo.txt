@@ -9,6 +9,5 @@ fix scheduleedit not working
 add [Required(ErrorMessage = "er msg")] to signatures in view models
 To protect from overposting attacks, enable the specific properties you want to bind to ( in controllers methods parameters ) more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
 add user defined working hours ?
-add details window in scheduleUserEdit when clicking on a job
+add details window in scheduleUserEdit when clicking on a job ?
 overhaul of ui
-fix rest of the pdf downloads ( based on watermeters )

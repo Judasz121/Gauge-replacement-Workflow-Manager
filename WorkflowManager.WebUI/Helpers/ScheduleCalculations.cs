@@ -16,21 +16,22 @@ namespace WorkflowManager.WebUI.Helpers
 		private static readonly int workEndHour = 15;
 		private static readonly int workEndMinute = 0;
 
-		public static async Task CalcBuilidngWorkSchedule(int buildingId)
+		public static void CalcBuilidngWorkSchedule(int buildingId)
 		{
+			
 			Building Building = _repository.BuildingRepository.SearchFor(b => b.Id == buildingId)
 				.Include(b => b.Jobs)
 					.ThenInclude(j => j.UserJobs)
 						.ThenInclude(uj => uj.User)
 				.FirstOrDefault()
 			;
-
 			List<Job> aggregated = new List<Job>();
 			List<Job> toAggregate = Building.Jobs.Where(j => j.Done != true).ToList();
 			int numOfItems = toAggregate.Count();
 			for (int i = 0; i < numOfItems; i++)
 			{
 				Job job = toAggregate.Aggregate((j1, j2) => j1.Order < j2.Order ? j1 : j2);
+				_repository._context.Entry(job).Reload();
 				toAggregate.Remove(job);
 				if (job.UserJobs.Any())
 				{

@@ -251,8 +251,7 @@ namespace WorkflowManager.WebUI.Controllers
 				}
 				_repository.SaveChanges();
 
-
-				await ScheduleCalculations.CalcBuilidngWorkSchedule(model.BuildingId);
+				ScheduleCalculations.CalcBuilidngWorkSchedule(model.BuildingId);
 				return RedirectToAction("BuildingIndex", "Schedule", new { id = model.BuildingId });
 			}
 			else

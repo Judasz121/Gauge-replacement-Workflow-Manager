@@ -165,7 +165,7 @@ namespace WorkflowManager.WebUI.Controllers
 					_repository.UserJobRepository.Insert(UJ);
 				}
 				_repository.SaveChanges();
-				ScheduleCalculations.CalcBuilidngWorkSchedule(job.IdBuilding).Wait();
+				ScheduleCalculations.CalcBuilidngWorkSchedule(job.IdBuilding);
 				return RedirectToAction("Index", "Job");
 			}
 			else
@@ -263,7 +263,7 @@ namespace WorkflowManager.WebUI.Controllers
 				
 				
 				if (usersChanged)
-					ScheduleCalculations.CalcBuilidngWorkSchedule(job.IdBuilding).Wait();
+					ScheduleCalculations.CalcBuilidngWorkSchedule(job.IdBuilding);
 				return RedirectToAction(nameof(Index));
 			}
 			else
