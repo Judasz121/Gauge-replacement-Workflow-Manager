@@ -26,7 +26,7 @@ namespace WorkflowManager.WebUI.Helpers
 				.FirstOrDefault()
 			;
 			List<Job> aggregated = new List<Job>();
-			List<Job> toAggregate = Building.Jobs.Where(j => j.Done != true).ToList();
+			List<Job> toAggregate = Building.Jobs.Where(j => j.Done != true && !j.Deleted).ToList();
 			int numOfItems = toAggregate.Count();
 			for (int i = 0; i < numOfItems; i++)
 			{
@@ -243,12 +243,13 @@ namespace WorkflowManager.WebUI.Helpers
 		}
 		public static DateTime NextWorkDay(DateTime startDate)
 		{
-			startDate.AddDays(1);
+			startDate = startDate.AddDays(1);
 			if (startDate.DayOfWeek == DayOfWeek.Saturday)
 				startDate.AddDays(2);
 			if (startDate.DayOfWeek == DayOfWeek.Sunday)
 				startDate.AddDays(1);
 
 			return DateTime.Parse(string.Format("{0} {1}:{2}", startDate.ToString("yyyy-MM-dd"), workStartHour.ToString(), workStartMinute.ToString()));
-		}	}
+		}	
+	}
 }
