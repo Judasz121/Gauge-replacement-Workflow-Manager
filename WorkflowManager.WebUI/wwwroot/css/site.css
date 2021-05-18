@@ -107,9 +107,6 @@ a.building-meter-header {
     height: 100%;
     margin-top: 15px;
 }
-.card-header {
-    cursor: pointer;
-}
 .form-group.submit-button-container {
     padding: 15px 0px 35px 0px
 }
@@ -146,4 +143,26 @@ a.disabled {
 }
 #buildingEditSortable{
     
+}
+
+.filter-header.card-subtitle {
+    padding-bottom: 15px;
+    cursor: pointer;
+}
+.filter-header .bi-chevron-up-container{
+    padding-left:5px;
+    display:inline-block;
+}
+.filter-header .bi-chevron-up-container .bi-chevron-up
+{
+    transition: .35s ease;
+    height: 16px !important;
+    position: static !important;
+    display: inline-block;
+}
+.filter-header .bi-chevron-up-container .bi-chevron-up:not(.show) {
+    transform: rotate(180deg) translateY(-5px);
+}
+.filter-header .bi-chevron-up-container .bi-chevron-up:not(.show):before, .filter-header .bi-chevron-up-container .bi-chevron.collapsing:before {
+
 }

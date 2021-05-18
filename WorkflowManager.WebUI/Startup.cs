@@ -36,6 +36,10 @@ namespace WorkflowManager.WebUI
 					options.JsonSerializerOptions.PropertyNamingPolicy = null;
 				})
 			;
+			services.AddControllers().AddNewtonsoftJson(options =>
+			{
+				options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+			});
 			services.AddSession();
 			services.AddRazorPages();
 

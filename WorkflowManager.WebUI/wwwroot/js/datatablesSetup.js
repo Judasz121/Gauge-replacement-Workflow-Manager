@@ -1,7 +1,7 @@
 ﻿$(document).ready(function () {
     var i;
     var dataTables = document.querySelectorAll("table[id^=dataTable");
-    console.log(dataTables);
+
     for (let table of dataTables) {
         const defaultSortClassRegex = /DefaultSort-\d-(desc|asc)/;
         const nonResponsiveClassRegex = /NonResponsiveColumn-\d*/;

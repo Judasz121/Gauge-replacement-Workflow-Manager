@@ -41,7 +41,7 @@
 										<hr />
 										@foreach (var user in item.Users)
 										{
-											@Html.ActionLink(user.FullName, "Details", "Building", new { id = user.Id }, new { @class = "object-link" })
+											@Html.ActionLink(user.FullName, "Details", "User", new { id = user.Id }, new { @class = "object-link" })
 											<br />
 										}
 									</div>
@@ -58,6 +58,28 @@
 		<div class="card">
 			<div class="card-header">
 				Wszystkie zadania
+				<hr />
+				<h6 class="card-subtitle text-muted filter-header" aria-label="Filtr" data-toggle="collapse" data-target=".alljobs-filter-collapse" aria-controls="alljobs-filter-collapse">
+					Filtr
+					<div class="bi-chevron-up-container">
+						<i class="bi bi-chevron-up alljobs-filter-collapse" id=""></i>
+					</div>
+				</h6>
+				<div class="collapse alljobs-filter-collapse" id="Alljobs-filter-content">
+
+						<div class="input-group mb-3">
+							<input name="filter_asignedName" type="text" class="form-control" placeholder="Imię" aria-label="Imię">
+							<span class="input-group-text">Przypisani</span>
+							<input name="filter_asignedSurname" type="text" class="form-control" placeholder="Nazwisko" aria-label="Nazwisko">
+						</div>
+						<div class="input-group mb-3">
+							<input name="filter_jobName" type="text" class="form-control" placeholder="Nazwa zadania" aria-label="Nazwa zadania" />
+						</div>
+						<div class="input-group mb-3">
+							<input name="filter_building" type="text" class="form-control" placeholder="Adres Budynku" aria-label="Adres Budynku" />
+						</div>
+				</div>
+
 			</div>
 			<div class="card-body">
 				<ul id="userEditSortable-AllJobs" class="connectedSortable">
@@ -80,7 +102,7 @@
 											<hr />
 											@foreach (var user in item.Users)
 											{
-												@Html.ActionLink(user.FullName, "Details", "Building", new { id = user.Id }, new { @class = "object-link" })
+												@Html.ActionLink(user.FullName, "Details", "User", new { id = user.Id }, new { @class = "object-link" })
 												<br />
 											}
 										</div>
@@ -95,15 +117,6 @@
 	</div>
 </div>
 
-@*<div class="row" style=" margin-top: 10px;">
-	<div class="col">
-		<div class="card">
-			<div class="card-header">
-				Szczegóły zadania
-			</div>
-			<div class="card-body">
-
-			</div>
-		</div>
-	</div>
-</div>*@
+@section Scripts {
+	<script src="~/js/scheduleUserEditFilter.js"></script>
+}

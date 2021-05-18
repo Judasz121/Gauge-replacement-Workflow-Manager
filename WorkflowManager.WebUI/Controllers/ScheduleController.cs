@@ -165,6 +165,45 @@ namespace WorkflowManager.WebUI.Controllers
 				return View(model);
 			}
 		}
+
+		[HttpPost]
+		[Authorize(Roles = "Admin, Manager")]
+		public JsonResult GetAllJobs(string id)
+		{
+			if (id == null || id == "")
+				return Json("Error: request must provide user id");
+
+			Job[] allJobs = _repository.JobRepository.SearchFor(j => !j.Deleted && !j.Done && !j.UserJobs.Any(uj => uj.UserId == id))
+				.Include(j => j.UserJobs)
+					.ThenInclude(uj => uj.User)
+				.Include(j => j.Building)
+				.ToArray()
+			;
+			foreach(Job job in allJobs)
+			{
+				job.Building.ResidentSign = null;
+			}
+
+			return Json(allJobs);
+		}
+
+		[HttpPost]
+		[Authorize(Roles = "Admin, Manager")]
+		public JsonResult GetAsignedJobs(string id)
+		{
+			if (id == null || id == "")
+				return Json("Error: request must provide user id");
+
+			IEnumerable<Job> asignedJobs = _repository.JobRepository.SearchFor(j => !j.Done && !j.Deleted && j.UserJobs.Any(uj => uj.UserId == id))
+				.Include(j => j.UserJobs)
+					.ThenInclude(uj => uj.User)
+				.Include(j => j.Building)
+			;
+			return Json(asignedJobs);
+		}
+
+
+
 		#endregion
 
 		#region Building
