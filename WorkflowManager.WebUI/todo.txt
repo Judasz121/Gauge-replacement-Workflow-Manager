@@ -1,6 +1,5 @@
 ﻿
 -- Focus Needed -- 
-job filter in scheduleUserEdit ?
 fix(ed) exception when opening font file in BuildingController.PDFdownloads ( "continue" and works fine )
 fix responsivness
 

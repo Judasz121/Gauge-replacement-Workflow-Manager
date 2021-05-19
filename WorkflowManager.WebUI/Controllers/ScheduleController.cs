@@ -182,6 +182,18 @@ namespace WorkflowManager.WebUI.Controllers
 			foreach(Job job in allJobs)
 			{
 				job.Building.ResidentSign = null;
+				foreach(UserJob UJ in job.UserJobs)
+				{
+					UJ.User.PasswordHash = null;
+					UJ.User.PhoneNumber = null;
+					UJ.User.Email = null;
+					UJ.User.NormalizedEmail = null;
+					UJ.User.UserName = null;
+					UJ.User.NormalizedUserName = null;
+					UJ.User.SecurityStamp = null;
+					UJ.User.ConcurrencyStamp = null;
+					UJ.User.UserRoles = null;
+				}
 			}
 
 			return Json(allJobs);
