@@ -15,8 +15,23 @@
 		</div>
 		<div class="form-group">
 			@Html.LabelFor(model => model.SelectedBuildingId)
-			@Html.DropDownListFor(model => model.SelectedBuildingId, Model.Buildings, new { @class = "form-control" })
-			@Html.ValidationMessageFor(model => model.SelectedBuildingId, "", htmlAttributes: new { @class = "form-text text-danger" } )
+			@*@Html.DropDownListFor(model => model.SelectedBuildingId, Model.BuildingsSelectList, new { @class = "form-control" })*@
+			@*@Html.ListBoxFor(model => model.SelectedBuildingId, Model.Buildings, new { @class = "form-control" })*@
+			@*@Html.DropDownListFor(model => model.SelectedBuildingId, new SelectList(Model.BuildingsRaw, "Id", "FullAddress", 7), new { @class = "form-control" })*@
+			<select class="form-control" data-val="true" data-val-required="Pole Budynek jest wymagane" id="SelectedBuildingId" name="SelectedBuildingId">
+			@foreach(BuildingViewModel item in Model.Buildings)
+			{
+				if(item.Id == Model.SelectedBuildingId)
+				{
+					<option value="@item.Id" selected>@item.FullAddress</option>
+				}
+				else
+				{
+					<option value="@item.Id" >@item.FullAddress</option>
+				}
+			}
+			</select>
+			@Html.ValidationMessageFor(model => model.SelectedBuildingId, "", htmlAttributes: new { @class = "form-text text-danger" })
 		</div>
 		<div class="form-group">
 			@Html.LabelFor(model => model.Job.Description)

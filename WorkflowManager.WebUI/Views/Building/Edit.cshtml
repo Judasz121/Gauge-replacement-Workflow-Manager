@@ -92,10 +92,16 @@
 					@foreach (JobViewModel item in Model.Building.Jobs)
 					{
 						<tr>
-							<th>@Html.DisplayFor(m => item.Name)</th>
-							<th>@Html.DisplayFor(m => item.Description)</th>
-							<th>@Html.DisplayFor(m => item.PredictedDoneDate)</th>
-							<th>@Html.DisplayFor(m => item.Users)</th>
+							<td>@Html.DisplayFor(m => item.Name)</td>
+							<td>@Html.DisplayFor(m => item.Description)</td>
+							<td>@Html.DisplayFor(m => item.PredictedDoneDate)</td>
+							<td>
+								@foreach(UserViewModel user in item.Users)
+								{
+								<a asp-action="Details" asp-controller="User" asp-route-id="@user.Id">@user.FullName</a>
+								<br />
+								}
+							</td>
 							<td>
 								<div class="btn-group dropdown">
 									<button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -179,7 +185,7 @@
 					</div>
 					<div class="form-group">
 						@Html.LabelFor(m => m.Building.WaterMetersRemarks)
-						@Html.TextAreaFor(m => m.Building.WaterMetersRemarks, new { htmlAttributes = new { @class = "form-control" } })
+						@Html.TextAreaFor(m => m.Building.WaterMetersRemarks, new { @class = "form-control" })
 						@Html.ValidationMessageFor(m => m.Building.WaterMetersRemarks, null, new { @class = "text-danger" })
 					</div>
 
@@ -278,7 +284,7 @@
 					</div>
 					<div class="form-group">
 						@Html.LabelFor(m => m.Building.HeatMetersRemarks)
-						@Html.TextAreaFor(m => m.Building.HeatMetersRemarks, new { htmlAttributes = new { @class = "form-control" } })
+						@Html.TextAreaFor(m => m.Building.HeatMetersRemarks, new { @class = "form-control" })
 						@Html.ValidationMessageFor(m => m.Building.HeatMetersRemarks, null, new { @class = "text-danger" })
 					</div>
 

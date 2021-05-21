@@ -102,18 +102,26 @@ namespace WorkflowManager.WebUI.Controllers
 
 		[HttpGet]
 		[Authorize(Roles = "Admin, Manager, Technician")]
-		public IActionResult Create()
+		public IActionResult Create(int? buildingId)
 		{
 			IMapper mapper = AutoMapperConfigs.JobCreate().CreateMapper();
-			IEnumerable<BuildingViewModel> buildings = mapper.Map<List<Building>, List<BuildingViewModel>>(_repository.BuildingRepository.GetAll().ToList());
-			IEnumerable<UserViewModel> users = mapper.Map<List<User>, List<UserViewModel>>(_repository.UserRepository.SearchFor(u => u.UserRoles.Any(ur => ur.Role.Name == "Technician" || ur.Role.Name == "Manager")).ToList());
+			IEnumerable<BuildingViewModel> buildings = mapper.Map<IEnumerable<Building>, IEnumerable<BuildingViewModel>>(_repository.BuildingRepository.GetAll().AsEnumerable());
+			IEnumerable<UserViewModel> users = mapper.Map<IEnumerable<User>, IEnumerable<UserViewModel>>(_repository.UserRepository.SearchFor(u => u.UserRoles.Any(ur => ur.Role.Name == "Technician" || ur.Role.Name == "Manager")));
+
 			JobCreateViewModel model = new JobCreateViewModel()
 			{
-				Buildings = new SelectList(buildings, "Id", "FullAddress"),
 				Users = new SelectList(users, "Id", "FullName"),
-				Job = new JobViewModel()
+				Job = new JobViewModel(),
+				Buildings = buildings
 			};
-            return View(model);
+			if (buildingId != null)
+			{
+				model.BuildingsSelectList = new SelectList(buildings,"Id", "FullAddress", buildingId);
+				model.SelectedBuildingId = (int)buildingId;
+			}
+			else
+				model.BuildingsSelectList = new SelectList(buildings, "Id", "FullAddress");
+			return View(model);
 		}
 
 
@@ -172,12 +180,14 @@ namespace WorkflowManager.WebUI.Controllers
 			{
 				IEnumerable<BuildingViewModel> buildings = mapper.Map<List<Building>, List<BuildingViewModel>>(_repository.BuildingRepository.GetAll().ToList());
 				IEnumerable<UserViewModel> users = mapper.Map<List<User>, List<UserViewModel>>(_repository.UserRepository.SearchFor(u => u.UserRoles.Any(ur => ur.Role.Name == "Technician" || ur.Role.Name == "Manager")).ToList());
-				model.Buildings = new SelectList(buildings, "Id", "FullAddress");
+				model.BuildingsSelectList = new SelectList(buildings, "Id", "FullAddress", model.SelectedBuildingId);
+				model.Buildings = buildings;
 				model.Users = new SelectList(users, "Id", "FullName");
 				return View(model);
 			}
 		}
 
+		[HttpGet]
 		[Authorize(Roles = "Admin, Manager, Technician")]
 		public IActionResult Edit(int? id)
 		{
@@ -198,11 +208,14 @@ namespace WorkflowManager.WebUI.Controllers
 				return NotFound();
 			}
 			IEnumerable<Building> buildings = _repository.BuildingRepository.GetAll();
-			IEnumerable<User> users = _repository.UserRepository.SearchFor(u => u.UserRoles.Any(ur => ur.Role.Name == "Technician" || ur.Role.Name == "Manager"));
+			IEnumerable<User> users = _repository.UserRepository.SearchFor(u => u.UserRoles.Any(ur => ur.Role.Name == "Technician" || ur.Role.Name == "Manager"))
+				.Include(u => u.UserBuildings)
+					.ThenInclude(ub => ub.Building)
+			;
 			JobEditViewModel model = new JobEditViewModel()
 			{
 				Job = mapper.Map<Job, JobViewModel>(job),
-				Buildings = new SelectList(buildings, "Id", "FullAddress", job.IdBuilding),
+				BuildingsSelectList = new SelectList(buildings, "Id", "FullAddress", job.IdBuilding),
 				Users = new MultiSelectList(users, "Id", "FullName", job.UserJobs.Select(uj => uj.User.Id))
 			};
 			model.SelectedBuildingId = job.IdBuilding;
@@ -284,7 +297,7 @@ namespace WorkflowManager.WebUI.Controllers
 				IEnumerable<Building> buildings = _repository.BuildingRepository.GetAll();
 				IEnumerable<User> users = _repository.UserRepository.SearchFor(u => u.UserRoles.Any(ur => ur.Role.Name == "Technician"));
 				model.Job = mapper.Map<Job, JobViewModel>(job);
-				model.Buildings = new SelectList(buildings, "Id", "FullAddress", job.IdBuilding);
+				model.BuildingsSelectList = new SelectList(buildings, "Id", "FullAddress", job.IdBuilding);
 				model.Users = new MultiSelectList(users, "Id", "FullName", model.SelectedUserIds);
 				return View(model);
 			}

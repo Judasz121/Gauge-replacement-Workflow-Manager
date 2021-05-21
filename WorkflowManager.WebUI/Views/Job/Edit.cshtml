@@ -26,9 +26,9 @@
 			@Html.LabelFor(model => model.Job.IdBuilding)
 
 			@if (User.IsInRole("Admin") || User.IsInRole("Manager"))
-				@Html.DropDownListFor(model => model.SelectedBuildingId, Model.Buildings, null, new { @class = "form-control" })
-				else
-					@Html.DropDownListFor(model => model.SelectedBuildingId, Model.Buildings, null, new { @class = "form-control", @readonly = true })
+				@Html.DropDownListFor(model => model.SelectedBuildingId, Model.BuildingsSelectList, null, new { @class = "form-control" })
+			else
+				@Html.DropDownListFor(model => model.SelectedBuildingId, Model.BuildingsSelectList, null, new { @class = "form-control", @readonly = true })
 
 			@Html.ValidationMessageFor(model => model.SelectedBuildingId, "", htmlAttributes: new { @class = "form-text text-danger" })
 		</div>

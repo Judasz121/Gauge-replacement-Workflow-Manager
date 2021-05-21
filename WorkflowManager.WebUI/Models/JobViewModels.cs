@@ -69,12 +69,13 @@ namespace WorkflowManager.WebUI.Models
         public IEnumerable<JobViewModel> Jobs { get; set; }
 	}
     public class JobCreateViewModel
-	{
+    {
         public JobViewModel Job { get; set; }
-        
+
         [Display(Name = "Budynek")]
-        public SelectList Buildings { get; set; }
-        [Display(Name = "Budynek")]
+        public IEnumerable<BuildingViewModel> Buildings {get;set;}
+		public SelectList BuildingsSelectList { get; set; }
+		[Display(Name = "Budynek")]
         public int SelectedBuildingId { get; set; }
 
         [Display(Name = "Przypisani")]

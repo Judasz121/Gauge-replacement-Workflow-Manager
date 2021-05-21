@@ -175,7 +175,9 @@ namespace WorkflowManager.WebUI.Helpers
 					.ForMember(dst => dst.Users, opt => opt.MapFrom(src => src.UserBuildings.Select(ub => ub.User)))
 				;
 				cfg.CreateMap<User, UserViewModel>();
-				cfg.CreateMap<Job, JobViewModel>();
+				cfg.CreateMap<Job, JobViewModel>()
+					.ForMember(dst => dst.Users, opt => opt.MapFrom(src => src.UserJobs.Select(uj => uj.User)))
+				;
 				cfg.CreateMap<WaterMeter, WaterMeterViewModel>();
 				cfg.CreateMap<HeatMeter, HeatMeterViewModel>();
 				cfg.CreateMap<CostMeter, CostMeterViewModel>();

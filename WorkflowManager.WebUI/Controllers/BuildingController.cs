@@ -195,6 +195,8 @@ namespace WorkflowManager.WebUI.Controllers
 			var building = _repository.BuildingRepository
 				.SearchFor(b => b.Id == id)
 				.Include(b => b.Jobs)
+                    .ThenInclude(j => j.UserJobs)
+                        .ThenInclude(uj => uj.User)
 				.Include(b => b.UserBuildings)
 					.ThenInclude(ub => ub.User)
 
