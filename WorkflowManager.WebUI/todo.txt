@@ -1,7 +1,7 @@
 ﻿
 -- Focus Needed -- 
 fix responsivness
-grouping in job/edit.asignedUsers based on building, updated on SelectedBuilding change ?
+grouping in job/edit.asignedUsers based on building, updated on SelectedBuilding change ??
 
  -- Easy -- 
 add [Required(ErrorMessage = "er msg")] to signatures in view models

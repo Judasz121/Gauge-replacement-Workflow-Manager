@@ -62,10 +62,10 @@
 		@Html.ValidationMessageFor(m => m.Building.ResidentSign, null, new { @class = "text-danger" })
 	</div>
 	<div class="form-group">
-		<h4>
+		<h4 class="jobs-header">
 			@Html.LabelFor(m => m.Building.Jobs)
 		</h4>
-		<span class="float-right">
+		<span class="float-right" class="jobs-header add-job">
 			<a asp-action="Create" asp-controller="Job" asp-route-buildingId="@Model.Building.Id" class="btn btn-primary">Dodaj zadanie</a>
 		</span>
 		<table id="dataTable1" class="NonResponsiveColumn-4">
